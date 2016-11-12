@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>1</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -221,9 +221,7 @@ if (!event) {
                 Dialog.active = true;
                 Dialog.alarm[0] = 1;
                 event = true;
-            }
-            else {
-                D1_Card.y = room_height - D1_Card.sprite_height - (gridSize / 2);
+                D1_Card.y = room_height / 2;
             }
         }
     }

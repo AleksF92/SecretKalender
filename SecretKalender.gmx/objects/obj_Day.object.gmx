@@ -34,6 +34,7 @@ right = x + sprite_width;
 bottom = y + sprite_height;
 textOffset = 16;
 frameWidth = 4;
+event = false;
 
 image_speed = 0;
 </string>
@@ -78,7 +79,7 @@ if (btnState == BTN_DISABLED) {
         }
     }
 }
-else {
+else if (!event) {
     //Reset color
     frameColor = c_white;
 

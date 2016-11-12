@@ -53,8 +53,14 @@ textMaxLength = (sprite_width * 3) - (TEXT_OFFSET * 2);
 textLineSpace = (TEXT_OFFSET * 2) + TEXT_OFFSET;
 
 //Auto activate first
-active = true;
-alarm[0] = room_speed;
+if ((room == rom_Calendar &amp;&amp; Game.introEvent) || room &gt; rom_Calendar) {
+    if (room == rom_Calendar) {
+        Game.introEvent = false;
+        obj_Day.event = true;
+    }
+    active = true;
+    alarm[0] = room_speed;
+}
 </string>
           </argument>
         </arguments>
@@ -157,20 +163,26 @@ if (keyboard_check_pressed(vk_space)) {
             else {
                 //End dialog
                 active = false;
-                if (room == rom_D1_Stigespill) {
+                if (room == rom_Calendar) {
+                    obj_Day.event = false;
+                }
+                else if (room == rom_D1_Stigespill) {
                     D1_Stigespill.event = false;
+                    D1_Card.y = room_height - D1_Card.sprite_height - (D1_Stigespill.gridSize / 2);
+                }
+                else if (room == rom_D2_DemonChase) {
+                    D2_DemonChase.alarm[0] = room_speed;
+                    D2_Aleks.alarm[0] = D2_Aleks.presentDelay;
                 }
             }
         }
     }
 }
 
-/*
 if (keyboard_check_pressed(vk_return)) {
-    active = true;
     alarm[0] = 1;
+    currentId = ds_list_size(texts) - 1;
 }
-*/
 </string>
           </argument>
         </arguments>
@@ -199,10 +211,19 @@ if (active &amp;&amp; currentId &gt;= 0) {
     draw_set_colour(c_white);
     draw_rectangle(x, y, frameR, bottom, false);
     
-    //Draw text
+    //Draw name
     draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_green);
+    var name = "";
+    if (avatars[| currentId] == spr_Aleks) { name = "Aleksander"; }
+    else if (avatars[| currentId] == spr_Stig) { name = "Stig"; }
+    else if (avatars[| currentId] == spr_Kristian) { name = "Kristian"; }
+    else if (avatars[| currentId] == spr_Larsen) { name = "Larsen"; }
+    draw_text_ext(textX, textY, name, textLineSpace, textMaxLength);
+    
+    //Draw text
     draw_set_colour(c_black);
-    draw_text_ext(textX, textY, text, textLineSpace, textMaxLength);
+    draw_text_ext(textX, textY + textLineSpace, text, textLineSpace, textMaxLength);
     
     //Draw emotion
     draw_sprite(avatars[| currentId], emotions[| currentId], frameR, y);

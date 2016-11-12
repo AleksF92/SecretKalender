@@ -3,8 +3,8 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-10</depth>
-  <persistent>-1</persistent>
+  <depth>1</depth>
+  <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -26,25 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-bgMusic = bgm_LastChristmas8Bit;
-menuTextVisible = false;
-days = 2;
-today = current_day;
-introEvent = true;
-
-//Check if correct month
-//if (current_month == 12) { days = 0; }
-
-//start timer
-alarm[0] = 1;
-
-//Start music
-var audioX = window_get_width() - sprite_get_width(spr_Audio) - 16;
-var audioY = 16;
-instance_create(audioX, audioY, AudioController);
-
-//Randomize
-randomize();
+presents = 0;
+spawnLen = 64 * 6;
+gameDone = false;
 </string>
           </argument>
         </arguments>
@@ -67,9 +51,15 @@ randomize();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Blink
-menuTextVisible = !menuTextVisible;
-alarm[0] = room_speed;
+            <string>///Spawn demon
+var spawnDir = random_int(0, 360);
+var spawnX = D2_Aleks.x + lengthdir_x(spawnLen, spawnDir);
+var spawnY = D2_Aleks.y + lengthdir_y(spawnLen, spawnDir);
+var demon = instance_create(spawnX, spawnY, D2_Demon);
+
+if (presents &gt;= 8) { alarm[0] = room_speed; }
+else if (presents &gt;= 4) { alarm[0] = room_speed * 2; }
+else { alarm[0] = room_speed * 3; }
 </string>
           </argument>
         </arguments>
@@ -92,17 +82,9 @@ alarm[0] = room_speed;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Handle global input
-if (room == rom_Menu) {
-    if (keyboard_check_pressed(vk_anykey)) {
-        //Open calendar
-        menuTextVisible = false;
-        alarm[0] = 0;
-        room_goto(rom_Calendar);
-    }
-}
-else if (room != rom_Calendar) {
-    if (keyboard_check_pressed(vk_escape)) {
+            <string>///Check for finish
+if (gameDone) {
+    if (!Dialog.active) {
         room_goto(rom_Calendar);
     }
 }
@@ -128,61 +110,9 @@ else if (room != rom_Calendar) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw menu text
-if (room == rom_Menu) {
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    draw_set_font(fnt_Arial_Medium);
-    draw_set_colour(c_white);
-    
-    //Draw welcome text
-    draw_text(x, y, "Hei og velkommen til vår julekalender!");
-    
-    //Draw start text
-    if (menuTextVisible) {
-        var sy = y + (string_height("TEXT") * 1.5);
-        draw_text(x, sy, "Klikk en knapp for å starte...");
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Draw day room info
-if (room &gt; rom_Calendar) {
-    draw_set_font(fnt_Arial_Small);
-    draw_set_colour(c_white);
-    draw_text(16, 16, "[ESC] Tilbake til kalender");
-    
-    draw_set_font(fnt_Arial_Medium);
-    draw_set_colour(c_white);
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    var rName = "";
-    switch (room) {
-        case rom_D1_Stigespill: { rName = "Luke 1: Stigespill"; break; }
-        case rom_D2_DemonChase: { rName = "Luke 2: Pakke inn demoner"; break; }
-    }
-    draw_text(window_get_width() / 2, 32, rName);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
-}
+            <string>///Background
+draw_set_colour(c_purple);
+draw_rectangle(0, 64, room_width, room_height, false);
 </string>
           </argument>
         </arguments>
