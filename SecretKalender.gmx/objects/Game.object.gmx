@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-10</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -41,6 +41,9 @@ alarm[0] = 1;
 var audioX = window_get_width() - sprite_get_width(spr_Audio) - 16;
 var audioY = 16;
 instance_create(audioX, audioY, AudioController);
+
+//Randomize
+randomize();
 </string>
           </argument>
         </arguments>

@@ -3,7 +3,7 @@
   <spriteName>spr_Audio</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-10</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -27,9 +27,13 @@
             <kind>1</kind>
             <string>///Init
 image_speed = 0;
-music = false;
-//audio_play_sound(Game.bgMusic, 0, true);
 image_index = 1;
+music = false;
+
+//Music on
+//image_index = 0;
+//audio_play_sound(Game.bgMusic, 0, true);
+//music = true;
 </string>
           </argument>
         </arguments>
