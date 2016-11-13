@@ -39,10 +39,14 @@ if (D2_DemonChase.presents &gt;= 8) { image_index = choose(0, 1, 1, 2, 2); }
 else if (D2_DemonChase.presents &gt;= 4) { image_index = choose(0, 0, 1, 1, 2); }
 else { image_index = choose(0, 0, 1); }
 
-//Set type speed
-if (image_index == 0) { moveSpeed = 2; }
-else if (image_index == 1) { moveSpeed = 4; }
-else if (image_index == 2) { moveSpeed = 6; }
+//Type differences
+var sound = noone;
+if (image_index == 0) { moveSpeed = 2; sound = snd_D2_Demon1; }
+else if (image_index == 1) { moveSpeed = 4; sound = snd_D2_Demon2; }
+else if (image_index == 2) { moveSpeed = 6; sound = snd_D2_Demon3; }
+
+//Play sound
+audio_play_sound(sound, 0, false);
 </string>
           </argument>
         </arguments>

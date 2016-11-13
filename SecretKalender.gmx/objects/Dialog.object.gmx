@@ -32,6 +32,7 @@ texts = ds_list_create();
 emotions = ds_list_create();
 autoPlayNext = ds_list_create();
 avatars = ds_list_create();
+parts = ds_map_create();
 
 //Work variables
 currentId = -1;
@@ -177,11 +178,6 @@ if (keyboard_check_pressed(vk_space)) {
             }
         }
     }
-}
-
-if (keyboard_check_pressed(vk_return)) {
-    alarm[0] = 1;
-    currentId = ds_list_size(texts) - 1;
 }
 </string>
           </argument>

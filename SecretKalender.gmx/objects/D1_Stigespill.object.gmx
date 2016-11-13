@@ -141,6 +141,7 @@ if (event) {
 else {
     stigTileId += sign(addValue);
     addValue -= sign(addValue);
+    audio_play_sound(snd_D1_Step, 0, false);
     
     if (stigTileId == 0 || stigTileId == winTileId) { addValue = 0; }
     
@@ -161,6 +162,7 @@ else {
             Dialog.active = true;
             Dialog.alarm[0] = 1;
             event = true;
+            audio_play_sound(snd_D1_Pokemon, 0, false);
         }
         
         //Cooldown draw

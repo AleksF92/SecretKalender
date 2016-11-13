@@ -28,7 +28,7 @@
             <string>///Init
 bgMusic = bgm_LastChristmas8Bit;
 menuTextVisible = false;
-days = 2;
+days = 4;
 today = current_day;
 introEvent = true;
 
