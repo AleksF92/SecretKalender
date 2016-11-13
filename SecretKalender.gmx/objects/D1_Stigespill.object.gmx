@@ -50,7 +50,10 @@ for (var i = 0; i &lt; numSpawns; i++) {
     while (true) {
         var randX = random_int(0, tilesX - 1);
         var randY = random_int(0, tilesY - 1);
-        if (tiles[# randX, randY] == 0) {
+        var tileEmpty = (tiles[# randX, randY] == 0);
+        var isFirstTile = (randX == 0 &amp;&amp; randY == 0);
+        var isLastTile = (randX = tilesX - 1 &amp;&amp; randY == tilesY - 1);
+        if (tileEmpty &amp;&amp; !(isFirstTile || isLastTile)) {
             var randPokemonId = random_int(D1_GOOD, D1_GOOD + 2);
             tiles[# randX, randY] = randPokemonId;
             break;
@@ -64,7 +67,10 @@ for (var i = 0; i &lt; numSpawns; i++) {
     while (true) {
         var randX = random_int(0, tilesX - 1);
         var randY = random_int(0, tilesY - 1);
-        if (tiles[# randX, randY] == 0) {
+        var tileEmpty = (tiles[# randX, randY] == 0);
+        var isFirstTile = (randX == 0 &amp;&amp; randY == 0);
+        var isLastTile = (randX = tilesX - 1 &amp;&amp; randY == tilesY - 1);
+        if (tileEmpty &amp;&amp; !(isFirstTile || isLastTile)) {
             var randPokemonId = random_int(D1_NEUTRAL, D1_NEUTRAL + 2);
             tiles[# randX, randY] = randPokemonId;
             break;
@@ -78,7 +84,10 @@ for (var i = 0; i &lt; numSpawns; i++) {
     while (true) {
         var randX = random_int(0, tilesX - 1);
         var randY = random_int(0, tilesY - 1);
-        if (tiles[# randX, randY] == 0 &amp;&amp; !(randX == 0 &amp;&amp; randY == 0) &amp;&amp; !(randX = tilesX - 1 &amp;&amp; randY == tilesY - 1)) {
+        var tileEmpty = (tiles[# randX, randY] == 0);
+        var isFirstTile = (randX == 0 &amp;&amp; randY == 0);
+        var isLastTile = (randX = tilesX - 1 &amp;&amp; randY == tilesY - 1);
+        if (tileEmpty &amp;&amp; !(isFirstTile || isLastTile)) {
             var randPokemonId = random_int(D1_BAD, D1_BAD + 1);
             tiles[# randX, randY] = randPokemonId;
             break;
@@ -198,16 +207,19 @@ if (!Dialog.active) {
         }
     }
     else {
-        if (!D1_Card.visible &amp;&amp; !alarm[1]) {
+        var firstCard = instance_find(D1_Card, 0);
+        if (!firstCard.visible &amp;&amp; !alarm[1]) {
             //Show random cards
-            with (D1_Card) { value = random_int(1, 4); }
-            D1_Card.visible = true;
+            with (D1_Card) {
+                value = random_int(1, 4);
+                visible = true;
+            }
 
             //Check if card intro is needed
             if (!cardIntro) {
                 cardIntro = true;
                 dialog_show("Cards");
-                D1_Card.y = room_height / 2;
+                with (D1_Card) { y = room_height / 2; }
             }
         }
     }

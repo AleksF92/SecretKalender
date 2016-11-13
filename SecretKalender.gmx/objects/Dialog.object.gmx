@@ -187,7 +187,9 @@ if (active &amp;&amp; !alarm[0]) {
         
         if (room == rom_D1_Stigespill) {
             //Move cards down
-            D1_Card.y = room_height - D1_Card.sprite_height - (D1_Stigespill.gridSize / 2);
+            with (D1_Card) {
+                y = room_height - sprite_height - (D1_Stigespill.gridSize / 2);
+            }
         }
         else if (room == rom_D2_DemonChase) {
             //Start spawning demons and wrapping presents

@@ -103,7 +103,7 @@ if (!Dialog.active) {
             <string>///Add value to stig
 if (!Dialog.active) {
     D1_Stigespill.addValue = value;
-    D1_Card.visible = false;
+    with (D1_Card) { visible = false; }
 }
 </string>
           </argument>
