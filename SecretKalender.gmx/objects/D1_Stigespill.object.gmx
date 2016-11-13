@@ -37,10 +37,8 @@ winTileId = (tilesY * tilesX) - 1;
 stigTileId = 0;
 addValue = 0;
 moveDelay = room_speed / 5;
-event = true;
 cardIntro = false;
 drawDelay = room_speed;
-pikaIntro = false;
 
 //Fill tiles
 ds_grid_clear(tiles, 0);
@@ -134,7 +132,7 @@ for (var i = 0; i &lt; numSpawns; i++) {
           <argument>
             <kind>1</kind>
             <string>///Add movement
-if (event) {
+if (Dialog.active) {
     //Delay until done
     alarm[0] = 1;
 }
@@ -154,14 +152,7 @@ else {
             addValue = random_int(5, 20);
             if (stigTileType &gt;= D1_NEUTRAL &amp;&amp; stigTileType &lt; D1_BAD) { addValue *= choose(1, -1); }
             if (stigTileType &gt;= D1_BAD) { addValue *= -1; }
-            if (pikaIntro) {
-                //Go back to event
-                Dialog.currentId -= 3;
-            }
-            pikaIntro = true;
-            Dialog.active = true;
-            Dialog.alarm[0] = 1;
-            event = true;
+            dialog_show("Pokemon");
             audio_play_sound(snd_D1_Pokemon, 0, false);
         }
         
@@ -195,15 +186,10 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Events
-if (!event) {
+if (!Dialog.active) {
     if (stigTileId == winTileId) {
         //Done, trigger end
-        Dialog.active = true;
-        Dialog.alarm[0] = 1;
-        event = true;
-        
-        //Set dialog to ending
-        Dialog.currentId = ds_list_size(Dialog.texts) - 2;
+        dialog_show("Win");
     }
     
     if (addValue != 0) {
@@ -220,17 +206,11 @@ if (!event) {
             //Check if card intro is needed
             if (!cardIntro) {
                 cardIntro = true;
-                Dialog.active = true;
-                Dialog.alarm[0] = 1;
-                event = true;
+                dialog_show("Cards");
                 D1_Card.y = room_height / 2;
             }
         }
     }
-}
-
-if (keyboard_check_pressed(vk_lshift)) {
-    show_message("Event: " + string(event));
 }
 </string>
           </argument>

@@ -101,9 +101,7 @@ if (distance_to_point(D2_Aleks.x, D2_Aleks.y) &lt;= 2) {
     D2_DemonChase.alarm[0] = 0;
     D2_Aleks.alarm[0] = 0;
     
-    Dialog.active = true;
-    Dialog.currentId = ds_list_size(Dialog.texts) - 5;
-    Dialog.alarm[0] = 1;
+    dialog_show("Fail");
     
     instance_deactivate_object(D2_Demon);
 }

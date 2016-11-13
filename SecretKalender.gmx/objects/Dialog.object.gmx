@@ -53,12 +53,11 @@ textY = y + TEXT_OFFSET;
 textMaxLength = (sprite_width * 3) - (TEXT_OFFSET * 2);
 textLineSpace = (TEXT_OFFSET * 2) + TEXT_OFFSET;
 
-//Auto activate first
-if ((room == rom_Calendar &amp;&amp; Game.introEvent) || room &gt; rom_Calendar) {
-    if (room == rom_Calendar) {
-        Game.introEvent = false;
-        obj_Day.event = true;
-    }
+//Check if day room or calendar
+if (room &gt; rom_Calendar || !Game.introPlayed) {
+    if (room == rom_Calendar) { Game.introPlayed = true; } //Play once
+
+    //Auto activate first
     active = true;
     alarm[0] = room_speed;
 }
@@ -147,8 +146,9 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Handle events
-if (keyboard_check_pressed(vk_space)) {
-    if (active) {
+if (active &amp;&amp; !alarm[0]) {
+    var deactivate = false;
+    if (keyboard_check_pressed(vk_space)) {
         if (text != texts[| currentId]) {
             //Skip writing
             text = texts[| currentId];
@@ -162,20 +162,37 @@ if (keyboard_check_pressed(vk_space)) {
                 alarm[0] = 1;
             }
             else {
-                //End dialog
-                active = false;
-                if (room == rom_Calendar) {
-                    obj_Day.event = false;
-                }
-                else if (room == rom_D1_Stigespill) {
-                    D1_Stigespill.event = false;
-                    D1_Card.y = room_height - D1_Card.sprite_height - (D1_Stigespill.gridSize / 2);
-                }
-                else if (room == rom_D2_DemonChase) {
-                    D2_DemonChase.alarm[0] = room_speed;
-                    D2_Aleks.alarm[0] = D2_Aleks.presentDelay;
-                }
+                //Trigger end dialog
+                deactivate = true;
             }
+        }
+    }
+    
+    if (keyboard_check_pressed(vk_return)) {
+        //Find first end
+        for (var i = currentId; i &lt; ds_list_size(texts); i++) {
+            currentId = i;
+            if (!autoPlayNext[| i]) { break; }
+        }
+        
+        //Trigger end dialog
+        deactivate = true;
+    }
+    
+    //Dialog end events
+    if (deactivate) {
+        //End dialog
+        deactivate = false;
+        active = false;
+        
+        if (room == rom_D1_Stigespill) {
+            //Move cards down
+            D1_Card.y = room_height - D1_Card.sprite_height - (D1_Stigespill.gridSize / 2);
+        }
+        else if (room == rom_D2_DemonChase) {
+            //Start spawning demons and wrapping presents
+            D2_DemonChase.alarm[0] = room_speed;
+            D2_Aleks.alarm[0] = D2_Aleks.presentDelay;
         }
     }
 }

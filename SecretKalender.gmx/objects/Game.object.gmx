@@ -30,7 +30,7 @@ bgMusic = bgm_LastChristmas8Bit;
 menuTextVisible = false;
 days = 4;
 today = current_day;
-introEvent = true;
+introPlayed = false;
 
 //Check if correct month
 //if (current_month == 12) { days = 0; }
@@ -165,19 +165,30 @@ if (room == rom_Menu) {
           <argument>
             <kind>1</kind>
             <string>///Draw day room info
-if (room &gt; rom_Calendar) {
-    draw_set_font(fnt_Arial_Small);
-    draw_set_colour(c_white);
-    draw_text(16, 16, "[ESC] Tilbake til kalender");
+if (room &gt;= rom_Calendar) {
+    //Draw commands
+    if (room &gt; rom_Calendar) {
+        draw_set_font(fnt_Arial_Small);
+        draw_set_colour(c_white);
+        draw_text(16, 16,
+            "[Esc] Tilbake til kalender"
+            + "#[Enter] Hopp over dialogen"
+        );
+    }
     
+    //Draw room title
     draw_set_font(fnt_Arial_Medium);
     draw_set_colour(c_white);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     var rName = "";
     switch (room) {
+        case rom_Calendar: { rName = "Julekalender 2016 av Secret Chest"; break; }
+        
         case rom_D1_Stigespill: { rName = "Luke 1: Stigespill"; break; }
         case rom_D2_DemonChase: { rName = "Luke 2: Pakke inn demoner"; break; }
+        case rom_D3_MadKristian: { rName = "Luke 3: Minecraft må dø"; break; }
+        case rom_D4_CallOfLarsen: { rName = "Luke 4: Call of Larsen"; break; }
     }
     draw_text(window_get_width() / 2, 32, rName);
     draw_set_halign(fa_left);

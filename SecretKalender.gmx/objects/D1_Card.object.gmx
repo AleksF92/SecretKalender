@@ -75,7 +75,7 @@ image_index = 0;
           <argument>
             <kind>1</kind>
             <string>///Highlight button
-if (!D1_Stigespill.event) {
+if (!Dialog.active) {
     image_index = 1;
 }
 </string>
@@ -101,7 +101,7 @@ if (!D1_Stigespill.event) {
           <argument>
             <kind>1</kind>
             <string>///Add value to stig
-if (!D1_Stigespill.event) {
+if (!Dialog.active) {
     D1_Stigespill.addValue = value;
     D1_Card.visible = false;
 }
