@@ -62,6 +62,10 @@ image_speed = 0;
 if (btnState == BTN_DISABLED) {
     //Check if existing day
     if (Game.days &gt;= day) {
+        if (!room_exists(room + day)) {
+            frameColor = c_red;
+        }
+    
         //Check if room is available yet
         if (Game.today == day) {
             btnState = BTN_TODAY;
@@ -79,22 +83,19 @@ if (btnState == BTN_DISABLED) {
     }
 }
 else if (!Dialog.active) {
-    //Reset color
-    frameColor = c_white;
-
-    //Check if mouse is inside button
-    if (mouse_x &gt;= x &amp;&amp; mouse_x &lt;= right) {
-        if (mouse_y &gt;= y &amp;&amp; mouse_y &lt;= bottom) {
-            if (room_exists(room + day)) {
+    if (room_exists(room + day)) {
+        //Reset color
+        frameColor = c_white;
+    
+        //Check if mouse is inside button
+        if (mouse_x &gt;= x &amp;&amp; mouse_x &lt;= right) {
+            if (mouse_y &gt;= y &amp;&amp; mouse_y &lt;= bottom) {
                 frameColor = c_lime;
                 
                 //Check for click
                 if (mouse_check_button_pressed(mb_left)) {
                     room_goto(room + day);
                 }
-            }
-            else {
-                frameColor = c_red;
             }
         }
     }

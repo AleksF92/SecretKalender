@@ -3,11 +3,124 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>1</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Init
+baseRange = 128;
+baseStrength = 0.2;
+gitterRange = 8;
+gitterStrength = 0.1;
+lightRange = baseRange;
+lightStrength = baseStrength;
+colInner = c_white;
+colOuter = c_yellow;
+gitterDelay = room_speed;
+alarm[0] = gitterDelay;
+gameDone = false;
+spawnDelayMin = room_speed * 0.5;
+spawnDelayMax = room_speed * 2;
+kills = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Spawn
+if (!gameDone) {
+    var randX = random_int(128, room_width - 128);
+    var spawn = instance_create(randX, 0, D4_Zombie);
+    alarm[2] = random_int(spawnDelayMin, spawnDelayMax);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Gitter backwards
+alarm[0] = gitterDelay;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Gitter backwards
+alarm[1] = gitterDelay;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -26,9 +139,74 @@
           <argument>
             <kind>1</kind>
             <string>///Events
-if (keyboard_check_pressed(vk_backspace)) {
-    dialog_show("Fail");
+var gitter = 0;
+if (alarm[0] &gt;= 0) { gitter = gitterDelay - max(0, alarm[0]); }
+if (alarm[1] &gt;= 0) { gitter = max(0, alarm[1]); }
+gitter /= gitterDelay;
+lightRange = baseRange + (gitterRange * gitter);
+lightStrength = baseStrength + (gitterStrength * gitter);
+
+if (gameDone) {
+    if (!Dialog.active) {
+        room_goto(rom_Calendar);
+    }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw kills
+draw_set_font(fnt_Arial_Gigantic);
+draw_set_colour(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(room_width / 2, room_height - 64, string(kills));
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw flashlight
+draw_set_alpha(lightStrength);
+draw_circle_colour(mouse_x, mouse_y, lightRange, colInner, colOuter, false);
+draw_set_alpha(1);
 </string>
           </argument>
         </arguments>

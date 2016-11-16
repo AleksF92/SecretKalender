@@ -3,8 +3,8 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-10</depth>
-  <persistent>-1</persistent>
+  <depth>0</depth>
+  <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -26,50 +26,21 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-bgMusic = bgm_LastChristmas8Bit;
-menuTextVisible = false;
-days = 24;
-today = current_day;
-introPlayed = false;
+clips = 0;
+memory = 128;
 
-//Check if correct month
-//if (current_month == 12) { days = 0; }
+camX = 0;
+camY = 0;
+camRec = false;
+camRange = 256;
 
-//start timer
-alarm[0] = 1;
+fov = 60;
+xLeft = 0;
+yLeft = 0;
+xRight = 0;
+yRight = 0;
 
-//Start music
-var audioX = window_get_width() - sprite_get_width(spr_Audio) - 16;
-var audioY = 16;
-instance_create(audioX, audioY, AudioController);
-
-//Randomize
-randomize();
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Blink
-menuTextVisible = !menuTextVisible;
-alarm[0] = room_speed;
+skipPre = false;
 </string>
           </argument>
         </arguments>
@@ -92,18 +63,75 @@ alarm[0] = room_speed;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Handle global input
-if (room == rom_Menu) {
-    if (keyboard_check_pressed(vk_anykey)) {
-        //Open calendar
-        menuTextVisible = false;
-        alarm[0] = 0;
-        room_goto(rom_Calendar);
+            <string>///Events
+
+//Update camera
+if (instance_exists(D5_Stig)) {
+    //Show camera
+    if (!mouse_check_button(mb_right)) {
+        //Move camera
+        camX = mouse_x;
+        camY = mouse_y;
+        camDir = 0;
+    }
+    else {
+        //Rotate camera
+        camDir = point_direction(camX, camY, mouse_x, mouse_y);
+        var leftDir = camDir - (fov / 2);
+        var rightDir = camDir + (fov / 2);
+        xLeft = camX + lengthdir_x(camRange, leftDir);
+        yLeft = camY + lengthdir_y(camRange, leftDir);
+        xRight = camX + lengthdir_x(camRange, rightDir);
+        yRight = camY + lengthdir_y(camRange, rightDir);
+    
+        if (mouse_check_button(mb_left) &amp;&amp; !Dialog.active) {
+            //Recording
+            D5_Stig.inCamera = point_in_triangle(D5_Stig.x, D5_Stig.y, camX, camY, xLeft, yLeft, xRight, yRight);
+            
+            //Drain memory
+            memory -= (4 / room_speed);
+            camRec = true;
+            if (memory &lt;= 0) {
+                //Lost
+                memory = 0;
+                gameDone = true;
+                dialog_show("Fail");
+                with (D5_Stig) {
+                    path_speed = 0;
+                }
+            }
+        }
+    }
+    
+    //Check if stopped recording
+    if (mouse_check_button_released(mb_left)) {
+        camRec = false;
     }
 }
-else if (room != rom_Calendar) {
-    if (keyboard_check_pressed(vk_escape)) {
+
+//Game logic
+if (!Dialog.active) {
+    //Check if done
+    if (gameDone) {
         room_goto(rom_Calendar);
+    }
+    
+    //Check if won
+    if (clips == 4 &amp;&amp; !gameDone) {
+        gameDone = true;
+        dialog_show("Win");
+    }
+    
+    if (!instance_exists(D5_Stig)) {
+        if (clips == 4) {
+            //Win
+            dialog_show("Win");
+        }
+        else {
+            //Try again, or next
+            var stig = instance_create(0, 0, D5_Stig);
+            if (skipPre) { stig.skipPre = true; skipPre = false; }
+        }
     }
 }
 </string>
@@ -128,21 +156,30 @@ else if (room != rom_Calendar) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw menu text
-if (room == rom_Menu) {
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    draw_set_font(fnt_Arial_Medium);
-    draw_set_colour(c_white);
-    
-    //Draw welcome text
-    draw_text(x, y, "Hei og velkommen til vår julekalender!");
-    
-    //Draw start text
-    if (menuTextVisible) {
-        var sy = y + (string_height("TEXT") * 1.5);
-        draw_text(x, sy, "Klikk en knapp for å starte...");
+            <string>///Draw camera
+if (instance_exists(D5_Stig)) {
+    //Get camera rec
+    var col = c_white;
+    var coneColor = c_yellow;
+    if (camRec) {
+        col = c_red;
+        coneColor = c_red;
     }
+    
+    //Get camera direction
+    var dir = 0;
+    if (mouse_check_button(mb_right)) {
+        dir = camDir;
+        
+        //Draw hit cone
+        draw_set_alpha(0.25);
+        draw_set_colour(coneColor);
+        draw_triangle(camX, camY, xLeft, yLeft, xRight, yRight, false);
+        draw_set_alpha(1);
+    }
+    
+    //Draw camera
+    draw_sprite_ext(spr_D5_Camera, 0, camX, camY, 1, 1, dir, col, 1);
 }
 </string>
           </argument>
@@ -164,36 +201,23 @@ if (room == rom_Menu) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw day room info
-if (room &gt;= rom_Calendar) {
-    //Draw commands
-    if (room &gt; rom_Calendar) {
-        draw_set_font(fnt_Arial_Small);
-        draw_set_colour(c_white);
-        draw_text(16, 16,
-            "[Esc] Tilbake til kalender"
-            + "#[Enter] Hopp over dialogen"
-        );
-    }
-    
-    //Draw room title
-    draw_set_font(fnt_Arial_Medium);
-    draw_set_colour(c_white);
-    draw_set_halign(fa_center);
-    draw_set_valign(fa_middle);
-    var rName = "";
-    switch (room) {
-        case rom_Calendar: { rName = "Julekalender 2016 av Secret Chest"; break; }
-        
-        case rom_D1_Stigespill: { rName = "Luke 1: Stigespill"; break; }
-        case rom_D2_DemonChase: { rName = "Luke 2: Pakke inn demoner"; break; }
-        case rom_D3_MadKristian: { rName = "Luke 3: Minecraft må dø"; break; }
-        case rom_D4_CallOfLarsen: { rName = "Luke 4: Call of Larsen"; break; }
-    }
-    draw_text(window_get_width() / 2, 32, rName);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
-}
+            <string>///Draw clips &amp; memory
+//Calculate position
+var infoX = (room_width / 2) + (64 * 5);
+var clipY = room_height - (64 * 3);
+var memY = clipY + 64;
+
+//Draw
+draw_set_font(fnt_Arial_Big);
+draw_set_colour(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(infoX, clipY, "Filmklipp: " + string(clips) + " / 4");
+
+draw_set_colour(c_red);
+draw_text(infoX, memY, "#Lagringsplass: " + string(memory) + " MB");
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
 </string>
           </argument>
         </arguments>
