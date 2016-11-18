@@ -41,6 +41,7 @@ xRight = 0;
 yRight = 0;
 
 skipPre = false;
+gameDone = false;
 </string>
           </argument>
         </arguments>
