@@ -26,17 +26,19 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-xLives = 3;
+xLives = 5;
 level = 1;
 xp = 0;
 xpMax = 100;
-xpMod = 1.5;
-hpMax = 10;
+xpMod = 1.25;
+hpMax = 4 * level;
 hp = hpMax;
+gameDone = false;
 
 currentPointId = 0;
 combat = false;
 hold = false;
+firstCombat = true;
 </string>
           </argument>
         </arguments>
@@ -84,29 +86,43 @@ hold = false;
             <kind>1</kind>
             <string>///Events
 if (!Dialog.active) {
+    if (gameDone) {
+        room_goto(rom_Calendar);
+    }
     if (!combat) {
         //Check for level enter
         if (keyboard_check_pressed(vk_space) &amp;&amp; currentPointId &gt; 0) {
             //Set background
             with (D6_ActionPoint) { visible = false; }
             background_visible[0] = false;
-            switch (currentPointId) {
-                case 1: { background_colour = c_green; break; }
-            }
+            background_colour = c_black;
+            
+            //Move player
+            x = 64 * 4;
+            y = room_height - (64 * 3);
             
             //Spawn sword
             var sword = instance_create(x, y, D6_Sword);
-            sword.damage = level * 2;
             combat = true;
             
             //Spawn enemies
+            var isBoss = (currentPointId == 5 || currentPointId == 10);
             var spawnNum = random_int(2, 4);
+            if (isBoss) { spawnNum = 1; }
             for (var i = 0; i &lt; spawnNum; i++) {
                 var randX = random_int(room_width / 2, room_width - 64);
-                var randY = random_int(64 * 3, 64 * 6);
+                var randY = y;
                 var enemy = instance_create(randX, randY, D6_Enemy);
-                enemy.level = currentPointId;
+                var realLvl = currentPointId + ((currentPointId - 1) * 2);
+                enemy.level = realLvl;
+                enemy.isBoss = isBoss;
                 enemy.image_index = currentPointId - 1;
+            }
+            
+            //Show dialog
+            if (firstCombat) {
+                firstCombat = false;
+                dialog_show("Combat Intro");
             }
         }
     }
@@ -120,7 +136,7 @@ if (!Dialog.active) {
         else {
             //Gravity
             y += 12;
-            var groundY = room_height - (64 * 2);
+            var groundY = room_height - (64 * 2.5);
             if (y &gt; groundY) { y = groundY; }
         }
     }
@@ -203,13 +219,30 @@ var w = room_width - 64;
 var x1 = 32;
 var y1 = room_height - 32;
 var y2 = y1 + 16;
-draw_set_colour(c_white);
+draw_set_colour(c_black);
 draw_rectangle(x1, y1, x1 + w, y2, false);
 
 //Draw xp progress
 var progress = xp / xpMax;
 draw_set_colour(c_purple);
 draw_rectangle(x1, y1, x1 + (w * progress), y2, false);
+
+//Draw bar framing
+draw_set_colour(c_white);
+draw_rectangle(x1, y1, x1 + w, y2, true);
+
+//Draw xp text
+draw_set_font(fnt_Arial_Small);
+draw_set_colour(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(x1 + (w / 2), y1 + 8, "Erfaring: " + string(xp) + " / " + string(xpMax));
+
+//Draw level text
+draw_set_font(fnt_Arial_Medium);
+draw_text(x1 + (w / 2), y1 - 16, "Nivå: " + string(level) + "      Ekstra liv: " + string(xLives));
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
 </string>
           </argument>
         </arguments>
@@ -238,12 +271,69 @@ if (combat) {
     var hpy1 = y - 48;
     var hpy2 = hpy1 + 8;
     draw_set_colour(c_white);
+    if (hp &lt;= 0) { draw_set_colour(c_red); }
     draw_rectangle(hpx1, hpy1, hpx1 + hpw, hpy2, false);
     
     //Draw hp progress
     var progress = hp / hpMax;
     draw_set_colour(c_lime);
     draw_rectangle(hpx1, hpy1, hpx1 + (hpw * progress), hpy2, false);
+    
+    //Draw hp text
+    draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(x, hpy1 - 16, string(hp) + " / " + string(hpMax));
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw background framing
+if (combat) {
+    //Find level color
+    var bgCol = c_black;
+    switch (currentPointId) {
+        case 1: { bgCol = make_colour_rgb(75, 150, 80); break; }
+        case 2: { bgCol = make_colour_rgb(17, 70, 70); break; }
+        case 3: { bgCol = make_colour_rgb(155, 180 , 155); break; }
+        case 4: { bgCol = make_colour_rgb(40, 40, 50); break; }
+        case 5: { bgCol = make_colour_rgb(70, 60, 60); break; }
+        case 6: { bgCol = make_colour_rgb(50, 90, 120); break; }
+        case 7: { bgCol = make_colour_rgb(90, 180, 200); break; }
+        case 8: { bgCol = make_colour_rgb(100, 120, 145); break; }
+        case 9: { bgCol = make_colour_rgb(25, 70, 115); break; }
+        case 10: { bgCol = make_colour_rgb(250, 150, 65); break; }
+    }
+    
+    //Draw framing
+    var x1 = 0;
+    var x2 = room_width;
+    var y1 = 64;
+    var y2 = room_height - (64 + 8);
+    draw_set_colour(bgCol);
+    draw_rectangle(x1, y1, x2, y2, false);
 }
 </string>
           </argument>

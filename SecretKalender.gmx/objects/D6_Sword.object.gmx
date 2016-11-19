@@ -3,7 +3,7 @@
   <spriteName>spr_D6_Sword</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-2</depth>
+  <depth>-3</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -26,12 +26,12 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-damage = 1;
+damage = D6_Aleks.level;
 swingDelayMin = room_speed * 0.3;
 swingDelayMax = room_speed;
 swingSpeedMin = 10;
 swingSpeedMax = 20;
-dir = -45;
+dir = 75;
 </string>
           </argument>
         </arguments>
@@ -102,14 +102,16 @@ dir = -45;
           <argument>
             <kind>1</kind>
             <string>///Events
-x = D6_Aleks.x + 16;
-y = D6_Aleks.y;
-
-if (!alarm[0]) {
-    dir -= random_int(swingSpeedMin, swingSpeedMax);
-    if (dir &lt; -75) {
-        alarm[0] = random_int(swingDelayMin, swingDelayMax);
-        dir = 75;
+if (!Dialog.active) {
+    x = D6_Aleks.x + 16;
+    y = D6_Aleks.y;
+    
+    if (!alarm[0]) {
+        dir -= random_int(swingSpeedMin, swingSpeedMax);
+        if (dir &lt; -75) {
+            alarm[0] = random_int(swingDelayMin, swingDelayMax);
+            dir = 75;
+        }
     }
 }
 </string>
@@ -138,8 +140,36 @@ if (!alarm[0]) {
 if (!(alarm[0] || other.alarm[2])) {
     //Does damage
     other.hp -= damage;
+    if (other.hp &lt; 0) {
+        other.hp = 0;
+        other.visible = false;
+    }
     other.alarm[2] = room_speed * 0.5;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw sword
+draw_sprite_ext(sprite_index, 0, x, y, 1, 1, dir, c_white, 1);
 </string>
           </argument>
         </arguments>
@@ -162,8 +192,7 @@ if (!(alarm[0] || other.alarm[2])) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw sword
-draw_sprite_ext(sprite_index, 0, x, y, 1, 1, dir, c_white, 1);
+            <string>///Hide self
 </string>
           </argument>
         </arguments>

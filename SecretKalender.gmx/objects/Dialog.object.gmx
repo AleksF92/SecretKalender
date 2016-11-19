@@ -26,7 +26,6 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-
 x = (window_get_width() / 2) - (sprite_width / 2);
 y = window_get_height() - sprite_height - 32;
 
@@ -42,6 +41,8 @@ currentId = -1;
 text = "";
 targetText = "";
 active = false;
+waitForInput = false;
+resumeDialog = false;
 
 //Help variables
 width = sprite_width * 4;
@@ -56,6 +57,13 @@ textY = y + TEXT_OFFSET;
 textMaxLength = (sprite_width * 3) - (TEXT_OFFSET * 2);
 textLineSpace = (TEXT_OFFSET * 2) + TEXT_OFFSET;
 
+inputW = 512;
+inputH = 64;
+inputX = (window_get_width() / 2) - (inputW / 2);
+inputY = (window_get_height() / 2) - (inputH / 2);
+inputMarker = "";
+inputText = "";
+
 //Check if day room or calendar
 if (room &gt; rom_Calendar || !Game.introPlayed) {
     if (room == rom_Calendar) { Game.introPlayed = true; } //Play once
@@ -63,6 +71,39 @@ if (room &gt; rom_Calendar || !Game.introPlayed) {
     //Auto activate first
     active = true;
     alarm[0] = room_speed;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Toggle input marker
+if (waitForInput) {
+    if (inputMarker == "") {
+        inputMarker = "|";
+    }
+    else {
+        inputMarker = "";
+    }
+    
+    alarm[2] = room_speed;
 }
 </string>
           </argument>
@@ -121,6 +162,13 @@ if (currentId + 1 &lt; ds_list_size(texts)) {
     text = "";
     targetText = texts[| currentId];
     alarm[1] = textDelay;
+    
+    //Check if input is required
+    if (string_contains(targetText, "Premie")) {
+        waitForInput = true;
+        keyboard_string = "";
+        alarm[2] = 1;
+    }
 }
 else {
     //Last dialog, end day
@@ -149,9 +197,10 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Handle events
-if (active &amp;&amp; !alarm[0]) {
+if (active &amp;&amp; !alarm[0] &amp;&amp; !waitForInput) {
     var deactivate = false;
-    if (keyboard_check_pressed(vk_space)) {
+    if (keyboard_check_pressed(vk_space) || resumeDialog) {
+        resumeDialog = false;
         if (text != texts[| currentId]) {
             //Skip writing
             text = texts[| currentId];
@@ -205,6 +254,17 @@ if (active &amp;&amp; !alarm[0]) {
         }
     }
 }
+else if (waitForInput) {
+    //Ask for input
+    var maxLetters = 40;
+    inputText = keyboard_string;
+    var overflow = string_length(inputText) - maxLetters;
+    if (overflow &gt; 0) {
+        //Hide overflow
+        inputText = string_copy(inputText, overflow, maxLetters);
+    }
+    inputText += inputMarker;
+}
 </string>
           </argument>
         </arguments>
@@ -249,6 +309,131 @@ if (active &amp;&amp; currentId &gt;= 0) {
     
     //Draw emotion
     draw_sprite(avatars[| currentId], emotions[| currentId], frameR, y);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw input field
+if (waitForInput) {
+    var w = 64 * 6;
+    var h = 110;
+    var x1 = (window_get_width() / 2) - (w / 2);
+    var x2 = x1 + w;
+    var y1 = (window_get_height() / 2) - (h / 2);
+    var y2 = y1 + h;
+    
+    //Calculate title text &amp; frame
+    var titleText = "Påmeldelse til konkurranse";
+    draw_set_font(fnt_Arial_Medium);
+    var tfh = string_height(titleText);
+    var tfx = window_get_width() / 2;
+    var tfy = y1 - (tfh + 16);
+    
+    //Draw frame
+    draw_set_color(c_maroon);
+    draw_rectangle(x1, tfy, x2, y1, false);
+    
+    //Draw text
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_text(tfx, tfy + 4, titleText);
+    draw_set_halign(fa_left);
+    
+        
+        
+    //Draw input frame
+    draw_set_colour(c_white);
+    draw_rectangle(x1, y1, x2, y2, false);
+    
+    //Draw field info
+    draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_black);
+    draw_text(x1 + 4, y1 + 4, "Din epost: ");
+    
+    //Draw input text framing
+    var textH = string_height(" ") + 8;
+    var txtY = y1 + textH;
+    var txtB = txtY + textH;
+    var txtC = txtY + (textH / 2);
+    draw_rectangle(x1 + 4, txtY, x2 - 4, txtB, true);
+    
+    //Draw input text
+    draw_set_valign(fa_middle);
+    draw_set_color(c_blue);
+    draw_text(x1 + 8, txtC, inputText);
+    draw_set_valign(fa_top);
+    
+    
+    
+    //Draw cancel button
+    var btnW = (w / 2) - 8;
+    var btnH = (textH * 1.5);
+    var btn1x = x1 + 4;
+    var btn1r = btn1x + btnW;
+    var btnY = y2 - btnH - 4;
+    var btnB = btnY + btnH;
+    draw_set_color(c_red);
+    draw_rectangle(btn1x, btnY, btn1r, btnB, false);
+    
+    //Check mouse hover
+    if (mouse_y &gt;= btnY &amp;&amp; mouse_y &lt;= btnB) {
+        if (mouse_x &gt;= btn1x &amp;&amp; mouse_x &lt;= btn1r) {
+            draw_set_color(c_white);
+            draw_set_alpha(0.5);
+            draw_rectangle(btn1x, btnY, btn1r, btnB, false);
+            draw_set_alpha(1);
+            if (mouse_check_button_pressed(mb_left)) {
+                //Clicked cancel
+                waitForInput = false;
+                resumeDialog = true;
+            }
+        }
+    }
+    
+    //Draw accept button
+    var btn2x = tfx + 4;
+    var btn2r = btn2x + btnW;
+    draw_set_color(c_green);
+    draw_rectangle(btn2x, btnY, btn2r, btnB, false);
+    
+    //Check mouse hover
+    if (mouse_y &gt;= btnY &amp;&amp; mouse_y &lt;= btnB) {
+        if (mouse_x &gt;= btn2x &amp;&amp; mouse_x &lt;= btn2r) {
+            draw_set_color(c_white);
+            draw_set_alpha(0.5);
+            draw_rectangle(btn2x, btnY, btn2r, btnB, false);
+            draw_set_alpha(1);
+            if (mouse_check_button_pressed(mb_left)) {
+                //Clicked accept
+                waitForInput = false;
+                resumeDialog = true;
+                
+                //Store name
+                var filePath = working_directory + "\" + room_get_name(room) + ".txt";
+                var file = file_text_open_append(filePath);
+                file_text_write_string(file, keyboard_string);
+                file_text_writeln(file);
+                file_text_close(file);
+            }
+        }
+    }
 }
 </string>
           </argument>
