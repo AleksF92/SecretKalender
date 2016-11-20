@@ -33,14 +33,14 @@ moveGain = 0.1;
 spawnDelay = room_speed;
 alarm[2] = spawnDelay;
 image_yscale = 0;
-image_alpha = 0;
+alpha = 0;
 targetY = room_height - (64 * 1);
 baseScale = 1;
 targetScale = 3;
 minSpawnY = 64 * 3;
 maxSpawnY = 64 * 6;
 targetDistMax = targetY - minSpawnY;
-dir = 1;
+dir = choose(1, -1);
 inTarget = false;
 
 y = random_int(minSpawnY, maxSpawnY);
@@ -149,7 +149,8 @@ distScale = (targetScale - baseScale) * (1 - (targetDist / targetDistMax));
 image_xscale = (baseScale + distScale) * dir;
 
 //Calculate visiblity
-image_alpha = 1 - (distance_to_point(mouse_x, mouse_y) * 0.01);
+alpha = 1 - (distance_to_point(mouse_x, mouse_y) * 0.01);
+if (alpha &lt; 0) { alpha = 0; }
 
 //State
 if (alarm[2]) {
@@ -223,7 +224,7 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Draw target
-draw_self();
+draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, 0, c_white, alpha);
 
 if (inTarget) {
     draw_sprite(spr_D4_Target, 0, mouse_x, mouse_y);

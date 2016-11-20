@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Init
+gameDone = false;
 gridSize = 64;
 tilesX = room_width div gridSize;
 tilesY = (room_height div gridSize) - 4;
@@ -196,9 +197,13 @@ else {
             <kind>1</kind>
             <string>///Events
 if (!Dialog.active) {
-    if (stigTileId == winTileId) {
+    if (gameDone) {
+        room_goto(rom_Calendar);
+    }
+    else if (stigTileId == winTileId) {
         //Done, trigger end
         dialog_show("Win");
+        gameDone = true;
     }
     
     if (addValue != 0) {

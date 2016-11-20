@@ -94,7 +94,38 @@ alarm[0] = room_speed;
             <kind>1</kind>
             <string>///Handle global input
 if (room == rom_Menu) {
-    if (keyboard_check_pressed(vk_anykey)) {
+    if (mouse_check_button_pressed(mb_any)) {
+        //Load initiated
+        keyboard_string = "";
+    }
+    else if (mouse_check_button(mb_any)) {
+        //Load writing
+    }
+    else if (mouse_check_button_released(mb_any)) {
+        //Load
+        var dayNum = real(keyboard_string);
+        if (dayNum &gt;= 1 &amp;&amp; dayNum &lt;= 24) {
+            //Check if need to handle winner
+            if (keyboard_check(vk_shift)) {
+                email_select_winner(dayNum);
+            }
+            if (keyboard_check(vk_control)) {
+                email_clear_winner(dayNum);
+            }
+        
+            //Check what info to display
+            if (mouse_check_button_released(mb_right)) {
+                email_display_all(dayNum);
+            }
+            else {
+                email_summary(dayNum);
+            }
+        }
+        else if (keyboard_check(vk_alt)) {
+            email_clear_all();
+        }
+    }
+    else if (keyboard_check_pressed(vk_anykey)) {
         //Open calendar
         menuTextVisible = false;
         alarm[0] = 0;
