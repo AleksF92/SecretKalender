@@ -2,7 +2,7 @@
 <object>
   <spriteName>spr_D8_Kristian</spriteName>
   <solid>0</solid>
-  <visible>-1</visible>
+  <visible>0</visible>
   <depth>0</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
@@ -27,6 +27,121 @@
             <kind>1</kind>
             <string>///Init
 image_speed = 0;
+phase = "Scout";
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Timer
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Dialog events
+if (!Dialog.active) {
+    if (phase == "Scout") {
+        //Start looking for larsen
+        path_start(pat_D8_Scout, 2, path_action_stop, true);
+        visible = true;
+        var super = instance_create(x, y, D7_Super);
+        super.state = "Super";
+        super.target = id;
+        super.image_index = super.superId;
+        super.scale = 2;
+        phase = "Larsen";
+    }
+    else if (phase == "Larsen") {
+        if (path_index &lt; 0) {
+            //Found larsen
+            alarm[0] = room_speed * 0.5;
+            phase = "Detect";
+        }
+        else {
+            //Swap look dir
+            if (path_position &gt; 0.75) { image_index = 1; }
+            else if (path_position &gt; 0.5) { image_index = 0; }
+            else if (path_position &gt; 0.25) { image_index = 1; }
+        }
+    }
+    else if (phase == "Detect") {
+        if (!alarm[0]) {
+            //Point at larsen
+            dialog_show("Intro: Larsen");
+            phase = "Løp";
+            image_index++;
+        }
+    }
+    else if (phase == "Detected") {
+        if (!alarm[0]) {
+            //Speak to larsen
+            alarm[0] = room_speed;
+            phase = "Detect";
+            image_index++;
+        }
+    }
+    else if (phase == "Løp") {
+        //Found larsen
+        dialog_show("Intro: Løp");
+        phase = "Attack";
+        image_index++;
+    }
+    else if (phase == "Attack") {
+        //Jump at larsen
+        path_start(pat_D8_Attack, 12, path_action_stop, true);
+        phase = "Controls";
+        image_index++;
+        with (D8_Larsen) {
+            path_start(pat_D8_RunStart, 4, path_action_stop, true);
+            sprite_index = spr_D8_Larsen;
+            image_index = 0;
+            moveSpeed = 1;
+        }
+    }
+    else if (phase == "Controls") {
+        if (D8_Larsen.path_index &lt; 0) {
+            D8_Larsen.y = D8_Larsen.groundY;
+            //Larsen gives info
+            dialog_show("Intro: Controls");
+            phase = "Murder";
+        }
+    }
+}
 </string>
           </argument>
         </arguments>
