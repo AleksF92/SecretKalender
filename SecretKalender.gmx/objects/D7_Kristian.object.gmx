@@ -29,7 +29,8 @@
 gameDone = false;
 doodles = 0;
 energyMax = 25;
-energy = 10;
+energy = 25;
+winCount = 500;
 
 pulling = false;
 speedX = 0;
@@ -124,6 +125,10 @@ if (speedX == 0 &amp;&amp; speedY == 0) {
         gameDone = true;
         dialog_show("Fail");
     }
+    
+    if (gameDone &amp;&amp; !Dialog.active) {
+        room_goto(rom_Calendar);
+    }
 }
 </string>
           </argument>
@@ -150,7 +155,10 @@ if (speedX == 0 &amp;&amp; speedY == 0) {
             <string>///Murderfuch doodle
 
 //Pick up
-doodles += other.value;
+if (!Dialog.active) {
+    doodles += other.value;
+    energy = clamp(energy + other.energy, 0, energyMax);
+}
 with (other) { instance_destroy(); }
 
 //Spawn more
@@ -158,8 +166,15 @@ if (instance_number(D7_Doodle) &lt; 30) {
     scr_D7_SpawnDoodleBatch();
 }
 
+//Check for power
+if (!instance_exists(D7_Super) &amp;&amp; doodles &gt;= (winCount * 0.5)) {
+    instance_create(x, y, D7_Super);
+    dialog_show("Half");
+}
+
 //Check for win
-if (!gameDone &amp;&amp; doodles &gt; 100) {
+if (!gameDone &amp;&amp; doodles &gt;= winCount) {
+    D7_Super.state = "Super";
     gameDone = true;
     dialog_show("Win");
 }
@@ -261,11 +276,12 @@ if (pulling) {
 //Draw doodle count
 var txtX = room_width / 2;
 var txtY = room_height - (64 * 3);
+var percent = clamp((doodles / winCount) * 100, 0, 100);
 draw_set_font(fnt_Arial_Big);
 draw_set_colour(c_orange);
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-draw_text(txtX, txtY, "Doodles: " + string(doodles));
+draw_text(txtX, txtY, "Doodles: " + string(doodles) + " (" + string(percent) + "%)");
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
