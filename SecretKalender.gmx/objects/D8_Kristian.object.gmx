@@ -136,6 +136,9 @@ if (!Dialog.active) {
     else if (phase == "Controls") {
         if (D8_Larsen.path_index &lt; 0) {
             D8_Larsen.y = D8_Larsen.groundY;
+            D8_Larsen.gameStarted = true;
+            D8_Larsen.alarm[2] = room_speed * random_range(1, 10);
+            D8_Larsen.alarm[3] = room_speed * random_range(1, 5);
             //Larsen gives info
             dialog_show("Intro: Controls");
             phase = "Murder";

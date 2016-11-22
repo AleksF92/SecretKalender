@@ -30,6 +30,9 @@ imageBaseSpeed = (1 / room_speed);
 image_speed = 0;
 moveSpeed = 0;
 gameDone = false;
+gameStarted = false;
+dewEvent = false;
+dieEvent = false;
 
 groundY = room_height - (64 * 2);
 grav = 0;
@@ -45,6 +48,43 @@ for (var i = 0; i &lt; numBg; i++) {
     bg.behind = true;
     bg.init = true;
 }
+
+//Distacen vars
+goalDist = 1000;
+lDist = 50;
+kDist = 0;
+kSpeed = 18;
+
+w = 512;
+h = 32;
+cx = room_width / 2;
+x1 = cx - (w / 2);
+y1 = room_height - 64;
+iScale = 0.5;
+iw = sprite_get_width(spr_Kristian) * iScale;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Timer for bushes
 </string>
           </argument>
         </arguments>
@@ -137,64 +177,132 @@ for (var i = 0; i &lt; numBg; i++) {
           <argument>
             <kind>1</kind>
             <string>///Events
-if (!Dialog.active &amp;&amp; sprite_index == spr_D8_Larsen) {
-    //Running
-    if (alarm[1]) { 
-        //Apply dew effect
-        var maxSp = max(15, min(30, alarm[1]));
-        moveSpeed = clamp(moveSpeed + 0.4, 0, maxSp);
-    }
-    else {
-        moveSpeed = clamp(moveSpeed + 0.2, 0, 15);
+if (!Dialog.active) {
+    //Check game state
+    if (gameDone) {
+        room_goto(rom_Calendar);
     }
     
-    //Spawning
-    if (!alarm[0]) {
-        //Spawn background
-        var bg = instance_create(0, 0, D8_Wall);
-        bg.behind = true;
-        alarm[0] = random_int(bgMinDelay, bgMaxDelay);
+    if (dieEvent &amp;&amp; path_index &lt; 0) {
+        gameDone = true;
+        dialog_show("Fail");
     }
-    if (!alarm[2]) {
-        if (random_int(1, 8) == 1) {
-            //Spawn dew
-            var dewX = room_width + 64;
-            var dewY = random_int(64 * 2, room_height / 2);
-            var dew = instance_create(dewX, dewY, D8_Dew);
+
+    if (sprite_index == spr_D8_Larsen) {
+        //Running
+        if (alarm[1]) { 
+            //Apply dew effect
+            var maxSp = max(15, min(30, alarm[1]));
+            moveSpeed = clamp(moveSpeed + 0.4, 0, maxSp);
         }
-        alarm[2] = room_speed;
-    }
-    
-    //Move objects to the left
-    with (D8_Wall) { x -= D8_Larsen.moveSpeed; }
-    with (D8_Dew) { x -= D8_Larsen.moveSpeed; }
-    
-    //Apply gravity
-    if (y &lt; groundY) {
-        grav = clamp(grav + 1, -30, 30);
-        y += grav;
-        if (y &gt;= groundY) {
-            //Hit ground
-            grav = 0;
-            y = groundY;
+        else {
+            moveSpeed = clamp(moveSpeed + 0.2, 0, 15);
         }
-    }
-    
-    //While on the ground
-    if (y == groundY) {
-        if (keyboard_check_pressed(vk_space)) {
-            grav = -30;
-            y -= 1;
-            image_speed = 0;
+        
+        if (!alarm[0]) {
+            //Spawn background
+            var bg = instance_create(0, 0, D8_Wall);
+            bg.behind = true;
+            alarm[0] = random_int(bgMinDelay, bgMaxDelay);
         }
-    }
-    if (y == groundY || path_index &gt;= 0) {
-        //Update image speed
-        image_speed = imageBaseSpeed * moveSpeed;
+        
+        if (gameStarted) {
+            //Spawning
+            if (!alarm[2]) {
+                //Spawn dew
+                var dewX = room_width + 64;
+                var dewY = random_int(64 * 2, room_height / 2);
+                var dew = instance_create(dewX, dewY, D8_Dew);
+                alarm[2] = room_speed * random_range(20, 30);
+            }
+            if (!alarm[3]) {
+                //Spawn dew
+                var bushX = room_width + 64;
+                var bushY = groundY + random_int(-16, 32);
+                var bush = instance_create(bushX, bushY, D8_Bush);
+                alarm[3] = room_speed * random_range(0.5, 5);
+            }
+            
+            //Update distance
+            var moveScale = 0.01;
+            lDist += moveSpeed * moveScale;
+            kDist += kSpeed * moveScale;
+        }
+        
+        //Move objects to the left
+        with (D8_Wall) { x -= D8_Larsen.moveSpeed; }
+        with (D8_Dew) { x -= D8_Larsen.moveSpeed; }
+        with (D8_Bush) { x -= D8_Larsen.moveSpeed; }
+        
+        //Apply gravity
+        if (y &lt; groundY) {
+            grav = clamp(grav + 1, -30, 30);
+            y += grav;
+            if (y &gt;= groundY) {
+                //Hit ground
+                grav = 0;
+                y = groundY;
+            }
+        }
+        
+        //While on the ground
+        if (y == groundY) {
+            if (mouse_check_button_pressed(mb_left)) {
+                grav = -30;
+                y -= 1;
+                image_speed = 0;
+            }
+        }
+        if (y == groundY || path_index &gt;= 0) {
+            //Update image speed
+            image_speed = imageBaseSpeed * moveSpeed;
+        }
+        
+        //Check for win/loose
+        if (!dieEvent) {
+            if (lDist &gt;= goalDist) {
+                gameDone = true;
+                dialog_show("Win");
+            }
+            else if (kDist &gt;= lDist) {
+                dieEvent = true;
+                path_start(pat_D8_Die, 10, path_action_stop, false);
+            }
+        }
     }
 }
 else {
     image_speed = 0;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="D8_Bush">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Slow down
+var bh = other.sprite_height * 0.5 * other.image_yscale;
+if (/*x &gt;= other.x - bw &amp;&amp; x &lt;= other.x + bw &amp;&amp;*/ y &gt; other.y - bh) {
+    var minSp = 3;
+    var decr = 0.6;
+    if (alarm[1]) { minSp = 6; decr = 8; }
+    moveSpeed = clamp(moveSpeed - decr, minSp, moveSpeed);
 }
 </string>
           </argument>
@@ -219,8 +327,58 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Dew of power
-alarm[1] = room_speed * 4;
-with (other) { instance_destroy(); }
+if (!Dialog.active) {
+    if (dewEvent) {
+        alarm[1] = room_speed * 8;
+        with (other) { instance_destroy(); }
+    }
+    else {
+        dialog_show("Dew Speed");
+        dewEvent = true;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw distance
+if (gameStarted &amp;&amp; !Dialog.active) {    
+    //Draw frame
+    draw_set_colour(c_white);
+    draw_rectangle(x1, y1, x1 + w, y1 + h, false);
+    
+    //Draw larsen
+    var lProg = lDist / goalDist;
+    var ilx = x1 + (w * lProg);
+    draw_set_colour(c_green);
+    draw_rectangle(x1, y1, x1 + (w * lProg), y1 + h, false);
+    draw_sprite_ext(spr_Face_Larsen, 0, ilx, y1, iScale, iScale, 0, c_white, 1);
+    
+    //Draw kristian
+    var kProg = kDist / goalDist;
+    var ikx = x1 + (w * kProg);
+    draw_set_colour(c_red);
+    draw_rectangle(x1, y1, x1 + (w * kProg), y1 + h, false);
+    draw_sprite_ext(spr_Face_Kristian, 0, ikx, y1, iScale, iScale, 0, c_white, 1);
+}
 </string>
           </argument>
         </arguments>
