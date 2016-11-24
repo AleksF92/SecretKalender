@@ -220,6 +220,16 @@ if (room &gt;= rom_Calendar) {
         case rom_D2_DemonChase: { rName = "Luke 2: Pakke inn demoner"; break; }
         case rom_D3_MadKristian: { rName = "Luke 3: Minecraft må dø"; break; }
         case rom_D4_CallOfLarsen: { rName = "Luke 4: Call of Larsen"; break; }
+        
+        case rom_D5_StigCamera: { rName = "Luke 5: Stig, kamera, action"; break; }
+        case rom_D6_AleksRPG: { rName = "Luke 6: Aleksanders eventyr"; break; }
+        case rom_D7_KristianPop: { rName = "Luke 7: Super-Kristian"; break; }
+        case rom_D8_RunLarsen: { rName = "Luke 8: Løp, Larsen... Løp"; break; }
+        
+        case rom_D9_StigLegend: { rName = "Luke 9: The Legend of Stig"; break; }
+        case rom_D10_Fiber: { rName = "Luke 10: Aleksander vil ha fiber"; break; }
+        //case rom_D7_KristianPop: { rName = "Luke 4: Call of Larsen"; break; }
+        //case rom_D8_RunLarsen: { rName = "Luke 4: Call of Larsen"; break; }
     }
     draw_text(window_get_width() / 2, 32, rName);
     draw_set_halign(fa_left);
