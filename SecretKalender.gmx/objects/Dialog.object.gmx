@@ -412,6 +412,14 @@ if (waitForInput) {
     draw_set_color(c_red);
     draw_rectangle(btn1x, btnY, btn1r, btnB, false);
     
+    //Draw cancel text
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(btn1x + (btnW / 2), btnY + (btnH / 2), "Avbryt");
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
     //Check mouse hover
     if (mouse_y &gt;= btnY &amp;&amp; mouse_y &lt;= btnB) {
         if (mouse_x &gt;= btn1x &amp;&amp; mouse_x &lt;= btn1r) {
@@ -432,6 +440,14 @@ if (waitForInput) {
     var btn2r = btn2x + btnW;
     draw_set_color(c_green);
     draw_rectangle(btn2x, btnY, btn2r, btnB, false);
+    
+    //Draw cancel text
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(btn2x + (btnW / 2), btnY + (btnH / 2), "Ja takk");
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
     
     //Check mouse hover
     if (mouse_y &gt;= btnY &amp;&amp; mouse_y &lt;= btnB) {

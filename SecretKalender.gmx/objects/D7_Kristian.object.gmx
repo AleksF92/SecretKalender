@@ -332,15 +332,6 @@ draw_set_valign(fa_top);
             <kind>1</kind>
             <string>///Draw
 draw_self();
-
-draw_set_font(fnt_Arial_Small);
-draw_set_colour(c_white);
-draw_set_halign(fa_center);
-draw_text(x, y - 64,
-    "Pulling: " + string(pulling)
-    + "#Speed: " + string(speedX) + ", " + string(speedY)
-);
-draw_set_halign(fa_left);
 </string>
           </argument>
         </arguments>
