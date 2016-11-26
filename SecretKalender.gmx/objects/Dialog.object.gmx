@@ -63,6 +63,7 @@ inputX = (window_get_width() / 2) - (inputW / 2);
 inputY = (window_get_height() / 2) - (inputH / 2);
 inputMarker = "";
 inputText = "";
+prizeText = "&lt;Premie mangler&gt;";
 
 //Check if day room or calendar
 if (room &gt; rom_Calendar || !Game.introPlayed) {

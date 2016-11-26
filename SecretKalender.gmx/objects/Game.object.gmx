@@ -49,6 +49,52 @@ randomize();
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set prizes
+prizes = ds_list_create();
+ds_list_add(prizes, "&lt;Premie 1 her&gt;");
+ds_list_add(prizes, "&lt;Premie 2 her&gt;");
+ds_list_add(prizes, "&lt;Premie 3 her&gt;");
+ds_list_add(prizes, "&lt;Premie 4 her&gt;");
+ds_list_add(prizes, "&lt;Premie 5 her&gt;");
+ds_list_add(prizes, "&lt;Premie 6 her&gt;");
+ds_list_add(prizes, "&lt;Premie 7 her&gt;");
+ds_list_add(prizes, "&lt;Premie 8 her&gt;");
+ds_list_add(prizes, "&lt;Premie 9 her&gt;");
+ds_list_add(prizes, "&lt;Premie 10 her&gt;");
+ds_list_add(prizes, "&lt;Premie 11 her&gt;");
+ds_list_add(prizes, "&lt;Premie 12 her&gt;");
+ds_list_add(prizes, "&lt;Premie 13 her&gt;");
+ds_list_add(prizes, "&lt;Premie 14 her&gt;");
+ds_list_add(prizes, "&lt;Premie 15 her&gt;");
+ds_list_add(prizes, "&lt;Premie 16 her&gt;");
+ds_list_add(prizes, "&lt;Premie 17 her&gt;");
+ds_list_add(prizes, "&lt;Premie 18 her&gt;");
+ds_list_add(prizes, "&lt;Premie 19 her&gt;");
+ds_list_add(prizes, "&lt;Premie 20 her&gt;");
+ds_list_add(prizes, "&lt;Premie 21 her&gt;");
+ds_list_add(prizes, "&lt;Premie 22 her&gt;");
+ds_list_add(prizes, "&lt;Premie 23 her&gt;");
+ds_list_add(prizes, "&lt;Premie 24 her&gt;");
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="2" enumb="0">
       <action>
@@ -199,6 +245,9 @@ if (room == rom_Menu) {
 if (room &gt;= rom_Calendar) {
     //Draw commands
     if (room &gt; rom_Calendar) {
+        draw_set_colour(c_black);
+        draw_rectangle(0, 0, room_width, 64, false);
+    
         draw_set_font(fnt_Arial_Small);
         draw_set_colour(c_white);
         draw_text(16, 16,
