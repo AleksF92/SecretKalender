@@ -218,10 +218,6 @@ if (!Dialog.active) {
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 }
-
-draw_set_font(fnt_Arial_Small);
-draw_set_colour(c_white);
-draw_text(room_width / 2, 64 + 4, "Paths: " + string(paths));
 </string>
           </argument>
         </arguments>
