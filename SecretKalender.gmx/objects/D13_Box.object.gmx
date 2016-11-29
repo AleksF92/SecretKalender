@@ -29,6 +29,8 @@
 image_speed = 0;
 D13_Game.boxesSpawned++;
 D13_Game.boxes++;
+fruitCount = 0;
+boomScale = 3;
 </string>
           </argument>
         </arguments>
@@ -58,6 +60,35 @@ while (collision_point(x, y - 1, D13_Box, false, true)) { y -= 1; }
         </arguments>
       </action>
     </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Boom
+var boom = instance_create(x, y - sprite_height / 2, D3_Boom);
+boom.depth = -4;
+boom.image_xscale = boomScale;
+boom.image_yscale = boomScale;
+D13_Game.boxes--;
+instance_destroy();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
@@ -77,40 +108,84 @@ while (collision_point(x, y - 1, D13_Box, false, true)) { y -= 1; }
             <kind>1</kind>
             <string>///Select box
 if (random_int(1, 2) == 1) {
+    //Spawn normal box
     image_index = D13_NORMAL;
-    var type = choose(1, 2, 3);
-    if (type == 2) {
+    fruitCount = 2;
+    var type = choose(1, 2);
+    if (type == 1) {
+        //Single box
+        image_index = choose(D13_NORMAL, D13_SECRET);
+        if (image_index == D13_SECRET) { fruitCount = 10; }
+    }
+    else if (type == 2) {
         /* Spawn form
            [ ]
         [ ][x][ ]
         */
         var lBox = instance_create(x - sprite_width, y, D13_Box);
         lBox.image_index = image_index;
+        lBox.fruitCount = fruitCount;
         var rBox = instance_create(x + sprite_width, y, D13_Box);
         rBox.image_index = image_index;
+        rBox.fruitCount = fruitCount;
         var tBox = instance_create(x, y - sprite_height, D13_Box);
         tBox.image_index = image_index;
+        tBox.fruitCount = fruitCount;
     }
 }
-else if (random_int(1, 2) == 1) {
-    image_index = D13_SECRET;
-}
-else if (random_int(1, 8) == 1) {
-    image_index = D13_MULTI;
-}
-else if (random_int(1, 8) == 1) {
+else if (random_int(1, 4) == 1) {
+    //Spawn danger
     image_index = D13_TNT;
+    if (y &gt; D13_Game.spawnBottom + 350) {
+        image_index = D13_NITRO;
+    }
 }
-else if (random_int(1, 8) == 1) {
-    image_index = D13_AKU;
-}
-else if (random_int(1, 8) == 1) {
-    image_index = D13_NITRO;
-}
-else if (random_int(1, 8) == 1) {
+else if (random_int(1, 4) == 1) {
+    //Spawn obstacle
+    //    [ ]
+    //    [ ]
+    //    [ ]
+    // [J][x]
     image_index = D13_METAL;
-    D13_Game.boxesSpawned--;
-    D13_Game.boxes--;
+    
+    var t1Box = instance_create(x, y - sprite_height, D13_Box);
+    t1Box.image_index = image_index;
+    var t2Box = instance_create(x, t1Box.y - sprite_height, D13_Box);
+    t2Box.image_index = image_index;
+    var t3Box = instance_create(x, t2Box.y - sprite_height, D13_Box);
+    t3Box.image_index = image_index;
+    var lBox = instance_create(x - sprite_width, y, D13_Box);
+    lBox.image_index = D13_MULTI;
+    lBox.fruitCount = 10;
+    
+    D13_Game.boxesSpawned -= 4;
+    D13_Game.boxes -= 4;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Events
+if (alarm[1]) {
+    image_index = D13_TNT + ceil(alarm[1] / room_speed);
 }
 </string>
           </argument>
@@ -135,36 +210,119 @@ else if (random_int(1, 8) == 1) {
           <argument>
             <kind>1</kind>
             <string>///Activate
-if (D13_Stig.fallSpeed &gt; 12) {
-    //Jumped on
-    var bounce = -(D13_Stig.jumpForce * 0.5);
-    var spring = -(D13_Stig.jumpForce * 1.25);
-    var type = image_index;
-    if (type == D13_NORMAL || type == D13_SECRET || type == D13_AKU) {
-        //fruit += fruitCount;
-        D13_Stig.fallSpeed = bounce;
+var type = image_index;
+if (D13_Stig.spinning) {
+    //Spun at
+    if (type &gt;= D13_TNT &amp;&amp; type &lt;= D13_TNT + 3) {
+        var boom = instance_create(x, y - sprite_height / 2, D3_Boom);
+        boom.depth = -4;
+        boom.image_xscale = boomScale;
+        boom.image_yscale = boomScale;
+        audio_play_sound(snd_D13_TNT_Instant, 0, false);
         D13_Game.boxes--;
         instance_destroy();
     }
-    else if (type == D13_MULTI) {
+    else if (type == D13_METAL) {
+        //Nothing
+    }
+    else if (type == D13_SWITCH) {
+        image_index = D13_METAL;
+        audio_play_sound(snd_D13_Switch, 0, false);
+        D13_Game.boxes--;
+        
+        //Explode all nitro
+        var numBoxes = instance_number(D13_Box);
+        for (var i = 0; i &lt; numBoxes; i++) {
+            var box = instance_find(D13_Box, i);
+            with (box) {
+                if (image_index == D13_NITRO) {
+                    var boom = instance_create(x, y - sprite_height / 2, D3_Boom);
+                    boom.depth = -4;
+                    boom.image_xscale = boomScale;
+                    boom.image_yscale = boomScale;
+                    boom.tint = c_lime;
+                    D13_Game.boxes--;
+                    instance_destroy();
+                }
+            }
+        }
+        
+        //Check for win or fail
+        D13_Game.gameDone = true;
+        if (D13_Game.boxes == 0 &amp;&amp; D13_Game.fruit &gt;= 50) {
+            dialog_show("Win");
+        }
+        else if (D13_Game.boxes == 0 &amp;&amp; D13_Game.fruit &lt; 50) {
+            dialog_show("Fail: Fruit");
+        }
+        else if (D13_Game.boxes &gt; 0 &amp;&amp; D13_Game.fruit &gt;= 50) {
+            dialog_show("Fail: Boxes");
+        }
+        else {
+            dialog_show("Fail: Total");
+        }
+    }
+    else if (type == D13_NORMAL) {
+        D13_Game.fruit += fruitCount;
+        D13_Game.boxes--;
+        audio_play_sound(snd_D13_Wompa, 0, false);
+        audio_play_sound(snd_D13_Box_Break, 0, false);
+        instance_destroy();
+    }
+    else if (type == D13_MULTI || type == D13_SECRET) {
+        D13_Game.fruit++;
+        D13_Game.boxes--;
+        audio_play_sound(snd_D13_Wompa, 0, false);
+        audio_play_sound(snd_D13_Box_Break, 0, false);
+        instance_destroy();
+    }
+}
+else if (D13_Stig.fallSpeed &gt; 12) {
+    //Jumped on
+    var bounce = -(D13_Stig.jumpForce * 0.5);
+    var spring = -(D13_Stig.jumpForce * 1.25);
+    if (type == D13_NORMAL || type == D13_SECRET || type == D13_AKU) {
+        D13_Game.fruit += fruitCount;
         D13_Stig.fallSpeed = bounce;
-        //fruit++;
-        //fruitCount--;
+        D13_Game.boxes--;
+        audio_play_sound(snd_D13_Wompa, 0, false);
+        audio_play_sound(snd_D13_Box_Break, 0, false);
+        instance_destroy();
+    }
+    else if (type == D13_MULTI) {
+        D13_Stig.fallSpeed = spring;
+        D13_Game.fruit++;
+        fruitCount--;
+        audio_play_sound(snd_D13_Wompa, 0, false);
+        audio_play_sound(snd_D13_Box_Bounce, 0, false);
+        if (fruitCount &lt;= 0) {
+            audio_play_sound(snd_D13_Box_Break, 0, false);
+            D13_Game.boxes--;
+            instance_destroy();
+        }
     }
     else if (type == D13_JUMP) {
         D13_Stig.fallSpeed = spring;
     }
     else if (type == D13_TNT) {
-        D13_Stig.fallSpeed = bounce;
-        //tntTime = room_speed * 3;
-    }
-    else if (type == D13_SWITCH) {
-    
+        if (!alarm[1]) {
+            D13_Stig.fallSpeed = bounce;
+            alarm[1] = room_speed * 3;
+            audio_play_sound(snd_D13_TNT, 0, false);
+        }
     }
 }
-else if (D13_Stig.spinning) {
-    //Spun at
-    
+
+if (type == D13_NITRO &amp;&amp; D13_Stig.fallSpeed &gt;= 0) {
+    //Boom reguardless
+    var boom = instance_create(x, y - sprite_height / 2, D3_Boom);
+    boom.depth = -4;
+    boom.image_xscale = boomScale;
+    boom.image_yscale = boomScale;
+    boom.tint = c_lime;
+    D13_Game.boxes--;
+    audio_play_sound(snd_D13_Nitro, 0, false);
+    instance_destroy();
 }
 </string>
           </argument>

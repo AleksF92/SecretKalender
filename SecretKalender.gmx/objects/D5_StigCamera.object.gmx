@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Init
 clips = 0;
-memory = 128;
+memory = 128 + 32;
 
 camX = 0;
 camY = 0;

@@ -132,6 +132,7 @@ if (!vanished) {
     vanished = true;
     direction = direction + 180;
     alpha = 0.25;
+    audio_play_sound(snd_D2_Laser, 0, false);
 }
 </string>
           </argument>

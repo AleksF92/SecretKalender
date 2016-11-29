@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Init
+gameDone = false;
 
 //Calculate bottom and top placements
 var h = sprite_get_height(spr_D13_Ground);
@@ -41,6 +42,7 @@ spawnY = spawnBottom;
 //Box variables
 boxesSpawned = 0;
 boxes = 0;
+fruit = 0;
 </string>
           </argument>
         </arguments>
@@ -62,7 +64,7 @@ boxes = 0;
           <argument>
             <kind>1</kind>
             <string>///Generate world
-for (var i = 0; i &lt; 10; i++) {
+for (var i = 0; i &lt; 20; i++) {
     var randGround = instance_create(spawnX, spawnY, D13_Ground);
     if (i &lt; 1) {
         randGround.image_index = 0;
@@ -73,11 +75,78 @@ for (var i = 0; i &lt; 10; i++) {
 //Generate crates
 var boxSpacing = sprite_get_width(spr_D13_Boxes) * 3;
 for (var xx = room_width; xx &lt; spawnX; xx += boxSpacing) {
-    if (random_int(1, 2) == 1) {
+    if (xx + boxSpacing &gt;= spawnX) {
+        var randBox = instance_create(xx, room_height - sprite_get_height(spr_D13_Boxes), D13_Box);
+        randBox.image_index = D13_SWITCH;
+    }
+    else if (random_int(1, 2) == 1) {
         var randBox = instance_create(xx, room_height - sprite_get_height(spr_D13_Boxes), D13_Box);
         randBox.alarm[0] = 1;
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Events
+if (gameDone &amp;&amp; !Dialog.active) {
+    room_goto(rom_Calendar);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw wompa
+var wompaX = 64 * 2;
+var wompaY = 64 * 2;
+draw_sprite(spr_D13_Wompa, 0, wompaX, wompaY);
+
+var boxX = (room_width / 2) - 64;
+draw_sprite_ext(spr_D13_Boxes, D13_NORMAL, boxX, wompaY, 0.5, 0.5, 0, c_white, 1);
+
+draw_set_font(fnt_Arial_Big);
+draw_set_colour(c_white);
+draw_set_valign(fa_middle);
+draw_text(wompaX + 32, wompaY, string(fruit) + " / 50");
+
+draw_text(boxX + 32, wompaY, string(boxesSpawned - boxes) + " / " + string(boxesSpawned));
+draw_set_valign(fa_top);
 </string>
           </argument>
         </arguments>

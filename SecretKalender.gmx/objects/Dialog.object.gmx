@@ -322,6 +322,7 @@ if (active &amp;&amp; currentId &gt;= 0) {
     else if (avatars[| currentId] == spr_Stig) { name = "Stig"; }
     else if (avatars[| currentId] == spr_Kristian) { name = "Kristian"; }
     else if (avatars[| currentId] == spr_Larsen) { name = "Larsen"; }
+    else if (avatars[| currentId] == spr_Dinkel) { name = "Dinkel-Bot"; }
     draw_text_ext(textX, textY, name, textLineSpace, textMaxLength);
     
     //Draw text
