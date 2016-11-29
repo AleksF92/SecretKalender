@@ -30,7 +30,8 @@ gameDone = false;
 doodles = 0;
 energyMax = 25;
 energy = 25;
-winCount = 500;
+winCount = 200;
+moveFactor = 2;
 
 pulling = false;
 speedX = 0;
@@ -42,6 +43,7 @@ hh = (sprite_height / 2) * 0.1;
 for (var i = 0; i &lt; 7; i++) {
     scr_D7_SpawnDoodleBatch();
 }
+scr_music(bgm_D7);
 </string>
           </argument>
         </arguments>
@@ -207,8 +209,8 @@ if (!Dialog.active) {
         var mDist = distance_to_point(mouse_x, mouse_y);
         if (mDist &gt;= 64) {
             //Launch
-            speedX = x - mouse_x;
-            speedY = y - mouse_y;
+            speedX = (x - mouse_x) * moveFactor;
+            speedY = (y - mouse_y) * moveFactor;
             energy--;
         }
     }
@@ -266,8 +268,8 @@ if (!Dialog.active) {
             <string>///Draw line
 if (pulling) {
     if (distance_to_point(mouse_x, mouse_y) &gt;= 64) {
-        var distX = x - mouse_x;
-        var distY = y - mouse_y;
+        var distX = (x - mouse_x) * moveFactor;
+        var distY = (y - mouse_y) * moveFactor;
         draw_set_colour(c_yellow);
         draw_line_width(x, y, x + distX, y + distY, 2);
     }

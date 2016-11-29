@@ -78,7 +78,7 @@ dir = 75;
           <argument>
             <kind>1</kind>
             <string>///Swing sword delay
-
+scr_sound(choose(snd_D6_Swing1, snd_D6_Swing2));
 </string>
           </argument>
         </arguments>

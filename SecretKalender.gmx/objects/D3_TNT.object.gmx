@@ -30,7 +30,7 @@ blockX = 0;
 blockY = 0;
 boomDelay = room_speed * 2;
 alarm[0] = boomDelay;
-audio_play_sound(snd_D3_TNT, 0, false);
+scr_sound(snd_D3_TNT);
 blastDist = 3;
 </string>
           </argument>

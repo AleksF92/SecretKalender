@@ -33,6 +33,7 @@ wallBottom = room_height - (64 * 2);
 grassCol = make_colour_rgb(74, 156, 74);
 moveSpeed = 4;
 rupees = 0;
+goal = 200;
 dir = 270;
 gameDone = false;
 
@@ -42,6 +43,8 @@ for (var i = 0; i &lt; 3; i++) {
     var enemyY = wallTop + 64 + (tileH * 2 * i);
     instance_create(0, enemyY, D9_Enemy);
 }
+
+scr_music(bgm_D9);
 </string>
           </argument>
         </arguments>
@@ -70,7 +73,7 @@ if (!Dialog.active) {
     if (gameDone) {
         room_goto(rom_Calendar);
     }
-    else if (rupees &gt; 200) {
+    else if (rupees &gt;= goal) {
         gameDone = true;
         dialog_show("Win");
     }

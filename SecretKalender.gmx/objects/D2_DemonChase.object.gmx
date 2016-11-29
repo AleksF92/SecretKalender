@@ -29,6 +29,7 @@
 presents = 0;
 spawnLen = 64 * 6;
 gameDone = false;
+scr_music(bgm_D2);
 </string>
           </argument>
         </arguments>

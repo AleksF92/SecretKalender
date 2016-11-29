@@ -34,11 +34,13 @@ xpMod = 1.25;
 hpMax = 4 * level;
 hp = hpMax;
 gameDone = false;
+dead = false;
 
 currentPointId = 0;
 combat = false;
 hold = false;
 firstCombat = true;
+scr_music(bgm_D6);
 </string>
           </argument>
         </arguments>

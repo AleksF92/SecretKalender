@@ -46,7 +46,7 @@ else if (image_index == 1) { moveSpeed = 4; sound = snd_D2_Demon2; }
 else if (image_index == 2) { moveSpeed = 6; sound = snd_D2_Demon3; }
 
 //Play sound
-audio_play_sound(sound, 0, false);
+scr_sound(sound);
 </string>
           </argument>
         </arguments>
@@ -132,7 +132,7 @@ if (!vanished) {
     vanished = true;
     direction = direction + 180;
     alpha = 0.25;
-    audio_play_sound(snd_D2_Laser, 0, false);
+    scr_sound(snd_D2_Laser);
 }
 </string>
           </argument>

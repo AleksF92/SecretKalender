@@ -45,6 +45,8 @@ for (var yy = 0; yy &lt; tilesY; yy++) {
         }
     }
 }
+
+scr_music(bgm_D3);
 </string>
           </argument>
         </arguments>

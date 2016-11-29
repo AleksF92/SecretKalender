@@ -99,7 +99,7 @@ path_speed = moveSpeed;
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
-        <whoName>self</whoName>
+        <whoName>other</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
@@ -131,6 +131,9 @@ if (!Dialog.active &amp;&amp; path_index &lt; 0) {
     else {
         //Play path after delay
         alarm[0] = room_speed * 1;
+        if (!preClip) {
+            scr_sound(snd_D5_Action);
+        }
     }
 }
 

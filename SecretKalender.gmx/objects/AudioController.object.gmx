@@ -3,7 +3,7 @@
   <spriteName>spr_Audio</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-10</depth>
+  <depth>-11</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -27,14 +27,10 @@
             <kind>1</kind>
             <string>///Init
 image_speed = 0;
-image_index = 1;
-music = false;
-playing = noone;
-
-//Music on
-//image_index = 0;
-//audio_play_sound(Game.bgMusic, 0, true);
-//music = true;
+image_index = 0;
+enabled = true;
+track = noone;
+isPlaying = false;
 </string>
           </argument>
         </arguments>
@@ -58,16 +54,42 @@ playing = noone;
           <argument>
             <kind>1</kind>
             <string>///Toggle music
-music = !music;
-if (music) {
+enabled = !enabled;
+if (enabled) {
     //Enable music
-    audio_play_sound(Game.bgMusic, 0, true);
     image_index = 0;
+    scr_music(track);
 }
 else {
     //Disable music
-    audio_stop_sound(Game.bgMusic);
     image_index = 1;
+    scr_music(noone);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Start music
+if (room &lt;= rom_Calendar) {
+    scr_music(bgm_LastChristmas8Bit);
 }
 </string>
           </argument>

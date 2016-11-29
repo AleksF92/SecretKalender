@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Init
+scr_music(bgm_D1);
 gameDone = false;
 gridSize = 64;
 tilesX = room_width div gridSize;
@@ -149,7 +150,7 @@ if (Dialog.active) {
 else {
     stigTileId += sign(addValue);
     addValue -= sign(addValue);
-    audio_play_sound(snd_D1_Step, 0, false);
+    scr_sound(snd_D1_Step);
     
     if (stigTileId == 0 || stigTileId == winTileId) { addValue = 0; }
     
@@ -163,7 +164,7 @@ else {
             if (stigTileType &gt;= D1_NEUTRAL &amp;&amp; stigTileType &lt; D1_BAD) { addValue *= choose(1, -1); }
             if (stigTileType &gt;= D1_BAD) { addValue *= -1; }
             dialog_show("Pokemon");
-            audio_play_sound(snd_D1_Pokemon, 0, false);
+            scr_sound(snd_D1_Pokemon);
         }
         
         //Cooldown draw

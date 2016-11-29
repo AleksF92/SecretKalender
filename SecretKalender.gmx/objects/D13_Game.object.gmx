@@ -43,6 +43,7 @@ spawnY = spawnBottom;
 boxesSpawned = 0;
 boxes = 0;
 fruit = 0;
+scr_music(bgm_D13);
 </string>
           </argument>
         </arguments>

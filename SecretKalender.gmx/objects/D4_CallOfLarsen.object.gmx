@@ -40,6 +40,7 @@ gameDone = false;
 spawnDelayMin = room_speed * 0.5;
 spawnDelayMax = room_speed * 2;
 kills = 0;
+scr_music(bgm_D4);
 </string>
           </argument>
         </arguments>

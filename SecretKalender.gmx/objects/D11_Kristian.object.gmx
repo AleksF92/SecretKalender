@@ -40,6 +40,7 @@ event = "Dinkel Intro";
 hasRock = false;
 infoRock = true;
 infoHit = true;
+scr_music(noone);
 </string>
           </argument>
         </arguments>
@@ -73,9 +74,10 @@ if (!Dialog.active) {
         dialog_show("Dinkel");
         with (D11_Dinkel) { path_start(pat_D11_Dinkel0, moveSpeed, path_action_stop, true); }
         D11_Dinkel.visible = true;
+        scr_music(bgm_D11);
     }
     else if (event == "Wait") {
-    
+        
     }
     else {
         //Movement

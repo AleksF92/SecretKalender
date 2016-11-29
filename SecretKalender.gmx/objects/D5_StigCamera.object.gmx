@@ -42,6 +42,7 @@ yRight = 0;
 
 skipPre = false;
 gameDone = false;
+scr_music(bgm_D5);
 </string>
           </argument>
         </arguments>

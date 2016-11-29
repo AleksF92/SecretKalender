@@ -63,9 +63,21 @@ alarm[0] = 1;
             <string>///Check if requirements are met
 if (link != noone) {
     if (!link.disabled) {
-        //Check if point should open
-        if (D6_Aleks.level &gt;= lvlReq &amp;&amp; link.won) {
-            disabled = false;
+        if (pointId == 3) {
+            //Special case
+            for (var i = 0; i &lt; instance_number(D6_ActionPoint); i++) {
+                var pnt = instance_find(D6_ActionPoint, i);
+                if (pnt.pointId == 2 &amp;&amp; pnt.won) {
+                    disabled = false;
+                    break;
+                }
+            }
+        }
+        else {
+            //Check if point should open
+            if (D6_Aleks.level &gt;= lvlReq &amp;&amp; link.won) {
+                disabled = false;
+            }
         }
     }
 }

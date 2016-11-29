@@ -28,6 +28,7 @@
             <string>///Init
 image_speed = 0;
 phase = "Scout";
+scr_music(noone);
 </string>
           </argument>
         </arguments>
@@ -132,6 +133,7 @@ if (!Dialog.active) {
             image_index = 0;
             moveSpeed = 1;
         }
+        scr_music(bgm_D8);
     }
     else if (phase == "Controls") {
         if (D8_Larsen.path_index &lt; 0) {
