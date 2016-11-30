@@ -33,7 +33,7 @@ today = current_day;
 introPlayed = false;
 
 //Check if correct month
-//if (current_month == 12) { days = 0; }
+//if (current_month &lt; 12) { days = 0; }
 
 //start timer
 alarm[0] = 1;
@@ -45,6 +45,13 @@ instance_create(audioX, audioY, AudioController);
 
 //Randomize
 randomize();
+
+//Secret interface
+secret = false;
+secretDay = 1;
+secretWinner = "";
+secretList = ds_list_create();
+secretId = 0;
 </string>
           </argument>
         </arguments>
@@ -67,30 +74,33 @@ randomize();
             <kind>1</kind>
             <string>///Set prizes
 prizes = ds_list_create();
-ds_list_add(prizes, "&lt;Premie 1 her&gt;");
-ds_list_add(prizes, "&lt;Premie 2 her&gt;");
-ds_list_add(prizes, "&lt;Premie 3 her&gt;");
-ds_list_add(prizes, "&lt;Premie 4 her&gt;");
-ds_list_add(prizes, "&lt;Premie 5 her&gt;");
-ds_list_add(prizes, "&lt;Premie 6 her&gt;");
-ds_list_add(prizes, "&lt;Premie 7 her&gt;");
-ds_list_add(prizes, "&lt;Premie 8 her&gt;");
-ds_list_add(prizes, "&lt;Premie 9 her&gt;");
-ds_list_add(prizes, "&lt;Premie 10 her&gt;");
-ds_list_add(prizes, "&lt;Premie 11 her&gt;");
-ds_list_add(prizes, "&lt;Premie 12 her&gt;");
-ds_list_add(prizes, "&lt;Premie 13 her&gt;");
-ds_list_add(prizes, "&lt;Premie 14 her&gt;");
-ds_list_add(prizes, "&lt;Premie 15 her&gt;");
-ds_list_add(prizes, "&lt;Premie 16 her&gt;");
-ds_list_add(prizes, "&lt;Premie 17 her&gt;");
-ds_list_add(prizes, "&lt;Premie 18 her&gt;");
-ds_list_add(prizes, "&lt;Premie 19 her&gt;");
-ds_list_add(prizes, "&lt;Premie 20 her&gt;");
-ds_list_add(prizes, "&lt;Premie 21 her&gt;");
-ds_list_add(prizes, "&lt;Premie 22 her&gt;");
-ds_list_add(prizes, "&lt;Premie 23 her&gt;");
-ds_list_add(prizes, "&lt;Premie 24 her&gt;");
+ds_list_add(prizes, "StarDrive#Platform: Steam");
+ds_list_add(prizes, "Star Wars: X-Wing vs Tie Fighter#Platform: Steam");
+ds_list_add(prizes, "World of Goo#Platform: Steam");
+ds_list_add(prizes, "Titanfall Quest Gold#Platform: Steam");
+ds_list_add(prizes, "Crayon Physics#Platform: Steam");
+ds_list_add(prizes, "Solstice#Platform: Steam");
+
+ds_list_add(prizes, "Roller Coaster Tycoon Deluxe#Platform: Steam");
+ds_list_add(prizes, "Star Wars: X-Wing Alliance#Platform: Steam");
+ds_list_add(prizes, "Out of the Park#Platform: Steam");
+ds_list_add(prizes, "Organ Trailer#Platform: Steam");
+ds_list_add(prizes, "Superbrothers#Platform: Steam");
+ds_list_add(prizes, "Runestone Keeper#Platform: Steam");
+
+ds_list_add(prizes, "Horizon#Platform: Steam");
+ds_list_add(prizes, "Star Wars Rebellion#Platform: Steam");
+ds_list_add(prizes, "Richard &amp; Alice#Platform: Steam");
+ds_list_add(prizes, "Speedball 2 HD#Platform: Steam");
+ds_list_add(prizes, "Gas Guzzlers Extreme#Platform: Steam");
+ds_list_add(prizes, "Uncanny Valley#Platform: Steam");
+
+ds_list_add(prizes, "Volgarr the Viking#Platform: Steam");
+ds_list_add(prizes, "Escape Goat 2#Platform: Steam");
+ds_list_add(prizes, "INK#Platform: Steam");
+ds_list_add(prizes, "The Shopkeeper#Platform: Steam");
+ds_list_add(prizes, "Fieldrunner#Platform: Steam");
+ds_list_add(prizes, "Over 9000 Zombies!#Platform: Steam");
 </string>
           </argument>
         </arguments>
@@ -140,6 +150,35 @@ alarm[0] = room_speed;
             <kind>1</kind>
             <string>///Handle global input
 if (room == rom_Menu) {
+    if (secret) {
+        if (keyboard_check_pressed(vk_escape)) {
+            secret = false;
+        }
+    }
+    else {
+        if (mouse_check_button_pressed(mb_left)) {
+            //Load initiated
+            keyboard_string = "";
+        }
+        else if (mouse_check_button(mb_left)) {
+            //Prevent other input
+        }
+        else if (mouse_check_button_released(mb_left)) {
+            //Check password initiated
+            if (keyboard_string == "ggwp") {
+                secret = true;
+                email_load_day(1);
+            }
+        }
+        else if (keyboard_check_pressed(vk_anykey)) {
+            //Open calendar
+            menuTextVisible = false;
+            alarm[0] = 0;
+            room_goto(rom_Calendar);
+        }
+    }
+    
+    /*
     if (mouse_check_button_pressed(mb_any)) {
         //Load initiated
         keyboard_string = "";
@@ -171,12 +210,7 @@ if (room == rom_Menu) {
             email_clear_all();
         }
     }
-    else if (keyboard_check_pressed(vk_anykey)) {
-        //Open calendar
-        menuTextVisible = false;
-        alarm[0] = 0;
-        room_goto(rom_Calendar);
-    }
+    */
 }
 else if (room != rom_Calendar) {
     if (keyboard_check_pressed(vk_escape)) {
@@ -282,6 +316,210 @@ if (room &gt;= rom_Calendar) {
         case rom_D13_BandiStig: { rName = "Luke 13: Stig Bandicoot"; break; }
     }
     draw_text(window_get_width() / 2, 32, rName);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw secret
+if (secret) {
+    var w = 512;
+    var th = 64;
+    var lh = 32;
+    var x1 = (room_width / 2) - (w / 2);
+    var y1 = 64 * 2;
+    var lines = 10;
+    
+    //Draw title frame
+    draw_set_colour(c_maroon);
+    draw_rectangle(x1, y1, x1 + w, y1 + th, false);
+    
+    //Draw title text
+    draw_set_font(fnt_Arial_Medium);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(x1 + (w / 2), y1 + (th / 2), "Deltakere - Luke " + string(secretDay));
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    //Button settings
+    var bx1 = x1;
+    var bx2 = x1 + w - th;
+    var bc1 = c_green;
+    var bc2 = c_green;
+    
+    //Hover buttons
+    if (mouse_y &gt;= y1 &amp;&amp; mouse_y &lt;= y1 + th) {
+        if (mouse_x &gt;= bx1 &amp;&amp; mouse_x &lt;= bx1 + th) {
+            bc1 = c_lime;
+            if (mouse_check_button_pressed(mb_left)) {
+                email_load_day(secretDay - 1);
+            }
+        }
+        else if (mouse_x &gt;= bx2 &amp;&amp; mouse_x &lt;= bx2 + th) {
+            bc2 = c_lime;
+            if (mouse_check_button_pressed(mb_left)) {
+                email_load_day(secretDay + 1);
+            }
+        }
+    }
+    
+    //Draw button frames
+    draw_set_colour(bc1);
+    draw_rectangle(bx1, y1, bx1 + th, y1 + th, false);
+    draw_set_colour(bc2);
+    draw_rectangle(bx2, y1, bx2 + th, y1 + th, false);
+    
+    //Draw button text
+    draw_set_font(fnt_Arial_Medium);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(bx1 + (th / 2), y1 + (th / 2), "&lt;&lt;");
+    draw_text(bx2 + (th / 2), y1 + (th / 2), "&gt;&gt;");
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    //Draw emails
+    var ye = 0;
+    for (var i = 0; i &lt; lines; i++) {
+        var col = c_black;
+        if (i mod 2 == 1) { col = c_dkgray; }
+        
+        //Draw frame
+        ye = (y1 + th) + (lh * i);
+        draw_set_colour(col);
+        draw_rectangle(x1, ye, x1 + w, ye + lh, false);
+        
+        if (secretId + i &lt; ds_list_size(secretList)) {
+            //Draw email text
+            draw_set_font(fnt_Arial_Small);
+            draw_set_colour(c_white);
+            draw_set_valign(fa_middle);
+            draw_text(x1 + 8, ye + (lh / 2), string(secretId + i + 1) + ": " + secretList[| secretId + i]);
+            draw_set_valign(fa_top);
+        }
+    }
+    
+    //Draw winner frame
+    var wy = ye + lh;
+    var by2 = wy + lh;
+    draw_set_colour(c_maroon);
+    draw_rectangle(x1, wy, x1 + w, by2, false);
+    
+    //Draw winner text
+    draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(x1 + (w / 2), wy + (lh / 2), "Vinner: " + secretWinner);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    //Draw button frame
+    draw_set_colour(c_maroon);
+    draw_rectangle(x1, by2, x1 + w, by2 + th, false);
+    
+    var ic1 = c_blue;
+    var ic2 = c_blue;
+    if (mouse_y &gt;= by2 &amp;&amp; mouse_y &lt;= by2 + th) {
+        if (mouse_x &gt;= bx1 &amp;&amp; mouse_x &lt;= bx1 + th) {
+            ic1 = c_aqua;
+            if (mouse_check_button_pressed(mb_left)) {
+                if (secretId - lines &gt;= 0) { secretId -= lines; }
+            }
+        }
+        else if (mouse_x &gt;= bx2 &amp;&amp; mouse_x &lt;= bx2 + th) {
+            ic2 = c_aqua;
+            if (mouse_check_button_pressed(mb_left)) {
+                if (secretId + lines &lt; ds_list_size(secretList)) { secretId += lines; }
+            }
+        }
+    }
+    
+    //Draw button frames
+    draw_set_colour(ic1);
+    draw_rectangle(bx1, by2, bx1 + th, by2 + th, false);
+    draw_set_colour(ic2);
+    draw_rectangle(bx2, by2, bx2 + th, by2 + th, false);
+    
+    //Draw button text
+    draw_set_font(fnt_Arial_Medium);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(bx1 + (th / 2), by2 + (th / 2), "/\");
+    draw_text(bx2 + (th / 2), by2 + (th / 2), "\/");
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    var bw = (w - (th * 2)) / 2;
+    var bcx = x1 + th;
+    var bwx = x1 + w - th - bw;
+    
+    var cc = c_purple;
+    var wc = c_green;
+    if (mouse_y &gt;= by2 &amp;&amp; mouse_y &lt;= by2 + th) {
+        if (mouse_x &gt;= bcx &amp;&amp; mouse_x &lt;= bcx + bw) {
+            cc = c_fuchsia;
+            if (mouse_check_button_pressed(mb_left)) {
+                var q = "Er du sikker på at du vil slette alle deltakere for Luke " + string(secretDay) + "?";
+                if (show_question(q)) {
+                    email_clear(secretDay);
+                    email_load_day(secretDay);
+                }
+            }
+        }
+        else if (mouse_x &gt;= bwx &amp;&amp; mouse_x &lt;= bwx + bw) {
+            wc = c_lime;
+            if (mouse_check_button_pressed(mb_left)) {
+                if (secretWinner != "&lt;Ikke valgt&gt;") {
+                    email_select_winner(secretDay);
+                    email_load_day(secretDay);
+                }
+                else {
+                    var q = "Er du sikker på at du vil trekke en vinner for Luke " + string(secretDay) + "?";
+                    if (show_question(q)) {
+                        email_select_winner(secretDay);
+                        email_load_day(secretDay);
+                    }
+                }
+            }
+        }
+    }
+    
+    //Draw button frames
+    draw_set_colour(cc);
+    draw_rectangle(bcx, by2, bcx + bw, by2 + th, false);
+    draw_set_colour(wc);
+    draw_rectangle(bwx, by2, bwx + bw, by2 + th, false);
+    
+    //Draw button text
+    draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_white);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(bcx + (bw / 2), by2 + (th / 2), "Reset luke");
+    draw_text(bwx + (bw / 2), by2 + (th / 2), "Trekk vinner");
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 }

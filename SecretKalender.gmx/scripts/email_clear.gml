@@ -10,4 +10,4 @@ ini_section_delete(dayStr);
 
 //Done
 ini_close();
-show_message("Alle data for " + dayStr + " ble slettet!");
+//show_message("Alle data for " + dayStr + " ble slettet!");
