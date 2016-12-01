@@ -14,5 +14,6 @@ if (!email_exists(dayNum, emailStr)) {
     
     //Done
     ini_close();
+    //gmmail("aleks_f92@hotmail.com", dayStr, "Jeg vil delta!", emailStr);
     show_message("Du er nå med i konkurransen!#Du vil bli kontaktet dersom du blir trukket ut.");
 }

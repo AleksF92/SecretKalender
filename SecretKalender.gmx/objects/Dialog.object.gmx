@@ -166,9 +166,13 @@ if (currentId + 1 &lt; ds_list_size(texts)) {
     
     //Check if input is required
     if (string_contains(targetText, "Premie")) {
-        waitForInput = true;
-        keyboard_string = "";
-        alarm[2] = 1;
+        //waitForInput = true;
+        //keyboard_string = "";
+        //alarm[2] = 1;
+        if (current_day != (room - rom_Calendar)) {
+            active = false;
+            room_goto(rom_Calendar);
+        }
     }
 }
 else {
@@ -223,13 +227,14 @@ if (active &amp;&amp; !alarm[0] &amp;&amp; !waitForInput) {
     
     if (keyboard_check_pressed(vk_return)) {
         //Find first end
+        var atId = currentId;
         for (var i = currentId; i &lt; ds_list_size(texts); i++) {
             currentId = i;
             if (!autoPlayNext[| i]) { break; }
         }
         
         //Check if input requirement
-        if (string_contains(texts[| currentId], "Premie")) {
+        if (string_contains(texts[| currentId], "Premie") &amp;&amp; atId != currentId) {
             currentId--;
             alarm[0] = 1;
         }

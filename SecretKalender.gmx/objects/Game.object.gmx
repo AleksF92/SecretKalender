@@ -52,6 +52,8 @@ secretDay = 1;
 secretWinner = "";
 secretList = ds_list_create();
 secretId = 0;
+
+//gmmail("aleks_f92@hotmail.com", "Luke x", "Jeg vil delta!", "example@sc.no");
 </string>
           </argument>
         </arguments>
