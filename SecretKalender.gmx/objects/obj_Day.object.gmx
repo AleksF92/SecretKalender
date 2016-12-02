@@ -72,7 +72,7 @@ if (btnState == BTN_DISABLED) {
             sprite_index = spr_Today;
             sprColor = c_white;
         }
-        else if (Game.today &gt; day) {
+        else if (Game.today &gt; day || Game.DEBUG) {
             btnState = BTN_ENABLED;
             sprColor = c_white;
         }

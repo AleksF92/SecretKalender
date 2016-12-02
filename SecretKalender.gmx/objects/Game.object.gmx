@@ -26,6 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>///Init
+DEBUG = true;
+
 bgMusic = bgm_LastChristmas8Bit;
 menuTextVisible = false;
 days = 24;
