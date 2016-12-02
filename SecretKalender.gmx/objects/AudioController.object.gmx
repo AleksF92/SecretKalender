@@ -31,6 +31,7 @@ image_index = 0;
 enabled = true;
 track = noone;
 isPlaying = false;
+lastRoom = noone;
 </string>
           </argument>
         </arguments>
@@ -88,9 +89,11 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Start music
-if (room &lt;= rom_Calendar) {
-    scr_music(bgm_LastChristmas8Bit);
+if (room &lt;= rom_Calendar &amp;&amp; (lastRoom &gt; rom_Calendar || lastRoom == noone)) {
+    var randSong = choose(bgm_Menu1, bgm_Menu2, bgm_Menu3);
+    scr_music(randSong);
 }
+lastRoom = room;
 </string>
           </argument>
         </arguments>

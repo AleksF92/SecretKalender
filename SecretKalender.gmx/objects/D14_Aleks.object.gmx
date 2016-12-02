@@ -32,8 +32,18 @@ wallLeft = 32;
 wallRight = room_width - 32;
 wallTop = 64 + 32;
 wallBottom = room_height - 32;
-moveSpeed = 2;
+moveSpeed = 4;
 gameDone = false;
+friend = noone;
+
+saved = 0;
+kills = 0;
+friendCount = 0;
+req = 0;
+
+//Spawn friends
+friendCount = instance_number(D14_Friend);
+req = friendCount - 1;
 </string>
           </argument>
         </arguments>
@@ -58,12 +68,25 @@ gameDone = false;
             <kind>1</kind>
             <string>///Events
 if (!Dialog.active) {
+    if (gameDone) {
+        room = rom_Calendar;
+    }
+    else {
+        if (saved &gt;= req) {
+            gameDone = true;
+            dialog_show("Win");
+        }
+        else if (saved + (friendCount - kills - saved) &lt; req) {
+            gameDone = true;
+            dialog_show("Fail: Friends");
+        }
+    }
+    
     //Movement
     var moveX = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var moveY = keyboard_check(ord("S")) - keyboard_check(ord("W"));
     var moveLenX = moveSpeed * moveX;
     var moveLenY = moveSpeed * moveY;
-    if (keyboard_check(vk_shift)) { moveLenX *= 1.5; moveLenY *= 1.5; }
     if (collision_line(x, y, x + moveLenX, y, D14_Wall, true, true)) { moveX = 0; }
     if (collision_line(x, y, x, y + moveLenY, D14_Wall, true, true)) { moveY = 0; }
     
@@ -78,6 +101,40 @@ if (!Dialog.active) {
         else if (y &gt; wallBottom) { y = wallBottom; }
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw info
+draw_set_font(fnt_Arial_Medium);
+draw_set_colour(c_white);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_text(room_width / 2, room_height - 64,
+    "Reddet: " + string(saved) + " / " + string(req)
+    + "#Døde: " + string(kills)
+    + "#Gjenstår: " + string(friendCount - kills - saved)
+);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
 </string>
           </argument>
         </arguments>

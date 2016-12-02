@@ -51,29 +51,38 @@
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
   </views>
   <instances>
-    <instance objName="Dialog" x="0" y="0" name="inst_85D492E3" locked="0" code="//Intro&#xA;ds_map_add(parts, &quot;Intro&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Hjelp meg redde folka!&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;&#xA;&#xA;&#xA;//Fail&#xA;ds_map_add(parts, &quot;Fail&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_FEAR);&#xA;ds_list_add(texts, &quot;EISANN!&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;&#xA;&#xA;&#xA;//Win&#xA;ds_map_add(parts, &quot;Win&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Nå er alle befridd!&quot;);&#xA;ds_list_add(autoPlayNext, true);&#xA;&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Premie: &quot; + Game.prizes[| room - rom_Calendar - 1] + &quot;#ÅPENBART SNIKETE&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="Dialog" x="0" y="0" name="inst_85D492E3" locked="0" code="//Intro&#xA;ds_map_add(parts, &quot;Intro&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Hjelp meg redde folka!&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;&#xA;&#xA;&#xA;//Fail: Dead&#xA;ds_map_add(parts, &quot;Fail: Dead&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_FEAR);&#xA;ds_list_add(texts, &quot;EISANN!&quot;);&#xA;ds_list_add(autoPlayNext, true);&#xA;&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_FACEPALM);&#xA;ds_list_add(texts, &quot;Han fikk øye på oss, den tosken!&quot;);&#xA;ds_list_add(autoPlayNext, true);&#xA;&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Vi får være litt mer snikete neste gang...&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;&#xA;&#xA;&#xA;//Fail: Friends&#xA;ds_map_add(parts, &quot;Fail: Friends&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_FEAR);&#xA;ds_list_add(texts, &quot;Uffda, vi kan jo ikke bare redde så få og kalle oss helter!&quot;);&#xA;ds_list_add(autoPlayNext, true);&#xA;&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_FACEPALM);&#xA;ds_list_add(texts, &quot;Vi får prøve på nytt...&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;&#xA;&#xA;&#xA;//Win&#xA;ds_map_add(parts, &quot;Win&quot;, ds_list_size(texts));&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Nå er alle befridd!&quot;);&#xA;ds_list_add(autoPlayNext, true);&#xA;&#xA;ds_list_add(avatars, spr_Aleks);&#xA;ds_list_add(emotions, EMO_HAPPY);&#xA;ds_list_add(texts, &quot;Premie: &quot; + Game.prizes[| room - rom_Calendar - 1] + &quot;#ÅPENBART SNIKETE&quot;);&#xA;ds_list_add(autoPlayNext, false);&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="192" y="224" name="inst_8DE783D1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="320" y="160" name="inst_9919200A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="704" y="192" name="inst_22D75092" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="928" y="448" name="inst_0AC34DDB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="896" y="320" name="inst_C3239653" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="768" y="640" name="inst_551C653F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Wall" x="320" y="672" name="inst_87DABE05" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Wall" x="320" y="640" name="inst_87DABE05" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Wall" x="96" y="576" name="inst_5FF14E6F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Wall" x="448" y="608" name="inst_1162BAFC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="448" y="160" name="inst_1630D61C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="64" y="320" name="inst_E101DA12" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="128" y="448" name="inst_77941B89" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="320" y="320" name="inst_C1D8F03F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Wall" x="512" y="544" name="inst_1162BAFC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Enemy" x="384" y="288" name="inst_1630D61C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Enemy" x="96" y="352" name="inst_E101DA12" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Enemy" x="192" y="608" name="inst_77941B89" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Enemy" x="768" y="384" name="inst_C1D8F03F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Enemy" x="576" y="128" name="inst_D352813A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_Enemy" x="832" y="192" name="inst_F7CF2774" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="768" y="448" name="inst_CCBD3920" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Enemy" x="512" y="448" name="inst_4FE687DD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="D14_Aleks" x="896" y="704" name="inst_751EA6EF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Enemy" x="480" y="416" name="inst_4FE687DD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Aleks" x="928" y="672" name="inst_751EA6EF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_RoomWall" x="0" y="736" name="inst_3D14D92E" locked="0" code="" scaleX="32" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_RoomWall" x="0" y="64" name="inst_A802B72E" locked="0" code="" scaleX="32" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="D14_RoomWall" x="0" y="96" name="inst_E16287F6" locked="0" code="" scaleX="1" scaleY="20" colour="4294967295" rotation="0"/>
     <instance objName="D14_RoomWall" x="992" y="96" name="inst_43E4F671" locked="0" code="" scaleX="1" scaleY="20" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="96" y="672" name="inst_7A214D9A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="480" y="160" name="inst_EA001A4F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="672" y="544" name="inst_6A4481FB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="832" y="128" name="inst_FFB69867" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="96" y="192" name="inst_D6C4445C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="512" y="352" name="inst_CB44A126" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Friend" x="416" y="384" name="inst_D761DF9D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Goal" x="896" y="640" name="inst_1D8E350F" locked="0" code="" scaleX="1.01587307453156" scaleY="1.01587307453156" colour="4294967295" rotation="0"/>
+    <instance objName="D14_RoomWall" x="384" y="640" name="inst_AE9B640B" locked="0" code="" scaleX="8" scaleY="3" colour="4294967295" rotation="0"/>
+    <instance objName="D14_Wall" x="800" y="512" name="inst_C467A60C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>
