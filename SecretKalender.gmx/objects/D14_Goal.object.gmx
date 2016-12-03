@@ -28,6 +28,7 @@
             <string>///Save friend
 D14_Aleks.friend = noone;
 D14_Aleks.saved++;
+scr_sound(snd_D6_LevelUp);
 instance_destroy();
 </string>
           </argument>

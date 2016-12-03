@@ -44,6 +44,7 @@ req = 0;
 //Spawn friends
 friendCount = instance_number(D14_Friend);
 req = friendCount - 1;
+scr_music(bgm_D14);
 </string>
           </argument>
         </arguments>
