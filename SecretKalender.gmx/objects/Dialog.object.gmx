@@ -203,7 +203,7 @@ else {
           <argument>
             <kind>1</kind>
             <string>///Handle events
-if (active &amp;&amp; !alarm[0] &amp;&amp; !waitForInput) {
+if (active &amp;&amp; !alarm[0] &amp;&amp; !waitForInput &amp;&amp; !inputLock) {
     var deactivate = false;
     if (keyboard_check_pressed(vk_space) || resumeDialog) {
         resumeDialog = false;
@@ -219,14 +219,14 @@ if (active &amp;&amp; !alarm[0] &amp;&amp; !waitForInput) {
                 //Trigger next
                 alarm[0] = 1;
             }
-            else if (!inputLock) {
+            else {
                 //Trigger end dialog
                 deactivate = true;
             }
         }
     }
     
-    if (keyboard_check_pressed(vk_return) &amp;&amp; !inputLock) {
+    if (keyboard_check_pressed(vk_return)) {
         //Find first end
         var atId = currentId;
         for (var i = currentId; i &lt; ds_list_size(texts); i++) {

@@ -81,7 +81,7 @@ prizes = ds_list_create();
 ds_list_add(prizes, "StarDrive#Platform: Steam");
 ds_list_add(prizes, "Star Wars: X-Wing vs Tie Fighter#Platform: Steam");
 ds_list_add(prizes, "World of Goo#Platform: Steam");
-ds_list_add(prizes, "Titanfall Quest Gold#Platform: Steam");
+ds_list_add(prizes, "Titanfall: Gold Edition#Platform: Steam");
 ds_list_add(prizes, "Crayon Physics#Platform: Steam");
 ds_list_add(prizes, "Solstice#Platform: Steam");
 

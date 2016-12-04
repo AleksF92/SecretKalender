@@ -60,6 +60,8 @@ for (var i = 0; i &lt; numChoices; i++) {
     var choice = instance_create(0, 0, D15_Choice);
     choice.path_position = (posSplit * i) + 0.001; //0.06125;
 }
+
+scr_music(bgm_D15);
 </string>
           </argument>
         </arguments>
