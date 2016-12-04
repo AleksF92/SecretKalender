@@ -26,9 +26,9 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-DEBUG = false;
+DEBUG = true;
+DISABLE_SOUND = true;
 
-bgMusic = bgm_LastChristmas8Bit;
 menuTextVisible = false;
 days = 24;
 today = current_day;

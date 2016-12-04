@@ -7,3 +7,4 @@ if (argument_count > 1) { delay = argument[1]; }
 Dialog.active = true;
 Dialog.currentId = Dialog.parts[? part] - 1;
 Dialog.alarm[0] = delay;
+Dialog.inputLock = false;

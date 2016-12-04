@@ -1,7 +1,7 @@
 ///scr_music(ind)
 var mus = argument[0];
 
-if (AudioController.enabled) {
+if (AudioController.enabled && !Game.DISABLE_SOUND) {
     if (mus != AudioController.track || !AudioController.isPlaying) {
         //Stop old music
         audio_stop_sound(AudioController.track);
