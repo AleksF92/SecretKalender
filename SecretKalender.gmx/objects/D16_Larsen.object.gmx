@@ -33,6 +33,7 @@ wakeupTimeMax = room_speed * 1;
 wakeupTime = 2;
 light = false;
 infoGhost = true;
+scr_music(noone);
 </string>
           </argument>
         </arguments>
@@ -132,6 +133,7 @@ if (!Dialog.active) {
     if (goToBed) {
         if (!path_index) {
             path_start(pat_D16_Bedtime, 2, path_action_stop, true);
+            scr_music(bgm_D16);
         }
     }
     else {
