@@ -29,6 +29,9 @@
 moveSpeed = 4;
 col = c_white;
 dur = 0;
+hit = false;
+good = false;
+bad = false;
 </string>
           </argument>
         </arguments>
@@ -51,8 +54,32 @@ dur = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (D17_Game.playingGuitar) {
+            <string>///Events
+if (D17_Game.playingGuitar) {
     x -= moveSpeed;
+    
+    if (!(good || bad)) {
+        if (x &lt; D17_Game.xMin) {
+            if (hit &amp;&amp; dur &lt; 0) {
+                good = true;
+            }
+            else if (hit &amp;&amp; x + dur &lt; D17_Game.xMin) {
+                good = true;
+            }
+            else if (!hit) {
+                //Missed
+                hit = true;
+                bad = true;
+                audio_master_gain(D17_Game.lowVolume);
+                //D17_Game.hp -= 1;
+            }
+            else if (dur &gt; 0) { D17_Game.noteScore += 2; }
+        }
+    }
+    
+    if (x + dur &lt; -32) {
+        instance_destroy();
+    }
 }
 </string>
           </argument>
@@ -77,9 +104,49 @@ dur = 0;
           <argument>
             <kind>1</kind>
             <string>///Draw with color
-draw_set_colour(col);
-draw_line_width(x, y, x + dur, y, 16);
-draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, col, 1);
+
+var longCol = noone;
+var noteCol = col;
+if (hit &amp;&amp; !(good || bad)) {
+    //Long note held
+    longCol = col;
+    noteCol = c_white;
+}
+else if (good) {
+    //Note hit
+    noteCol = c_white;
+}
+else if (bad) {
+    //Note missed
+    noteCol = c_black;
+}
+
+
+//Draw line
+if (dur &gt; 0) {
+    //Draw line build
+    if (longCol == col) {
+        //Draw line
+        draw_set_colour(longCol);
+        draw_line_width(x + 16, y, x + dur, y, 16);
+    
+        //Draw line build
+        draw_set_colour(noteCol);
+        var centerX = D17_Game.xMin + ((D17_Game.xMax - D17_Game.xMin) / 2);
+        if (x + dur &gt; centerX) {
+            draw_line_width(x + 16, y, centerX, y, 16);
+        }
+    }
+    else {
+        //Draw line
+        draw_set_colour(noteCol);
+        draw_line_width(x + 16, y, x + dur, y, 16);
+    }
+}
+
+//Draw note
+draw_set_colour(noteCol);
+draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, noteCol, 1);
 </string>
           </argument>
         </arguments>
