@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Init
 DEBUG = true;
-DISABLE_SOUND = false;
+DISABLE_SOUND = true;
 
 menuTextVisible = false;
 days = 24;
