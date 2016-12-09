@@ -73,9 +73,53 @@ if (!Dialog.active) {
     //Check for tile collision
     var tile = collision_point(x, y, D18_Tile, false, true);
     if (tile) {
-        if (tile.trigger &amp;&amp; !instance_exists(D18_Boulder)) {
-            instance_create(256, 256, D18_Boulder);
-            //show_message("Boulder spawned!");
+        if (tile.trigger) {
+            with (tile) { instance_destroy(); }
+            gameDone = true;
+            dialog_show("Fail: Tile", room_speed * 0.5);
+        }
+    }
+    
+    //Check for boulder collision
+    var boulder = collision_point(x, y, D18_Boulder, false, true);
+    if (boulder) {
+        gameDone = true;
+        dialog_show("Fail: Boulder");
+    }
+    
+    //Check for key
+    var key = collision_point(x, y, D18_Key, false, true);
+    if (key) {
+        if (!key.follow) {
+            key.follow = true;
+        }
+    }
+    
+    //Check for switch
+    var pull = collision_point(x, y, D18_Switch, false, true);
+    if (pull) {
+        if (!pull.image_index == 1) {
+            if (D18_Key.follow) {
+                //Pull on
+                with (D18_Key) { instance_destroy(); }
+                pull.image_index = 1;
+                D18_Exit.image_index = 1;
+                if (!instance_exists(D18_Boulder)) {
+                    instance_create(0, 0, D18_Boulder);
+                }
+            }
+        }
+    }
+    
+    //Check for exit
+    var door = collision_point(x, y, D18_Exit, false, true);
+    if (door) {
+        if (door.image_index == 1) {
+            if (!D18_Boulder.path_index &lt; 0) {
+                //Not boulder blocked
+                gameDone = true;
+                dialog_show("Win");
+            }
         }
     }
 }

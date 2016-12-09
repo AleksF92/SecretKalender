@@ -315,7 +315,7 @@ else if (waitForInput) {
           <argument>
             <kind>1</kind>
             <string>///Draw dialog
-if (active &amp;&amp; currentId &gt;= 0) {
+if (active &amp;&amp; currentId &gt;= 0 &amp;&amp; !alarm[0]) {
     //Draw main frame
     draw_set_colour(c_white);
     draw_rectangle(x, y, frameR, bottom, false);

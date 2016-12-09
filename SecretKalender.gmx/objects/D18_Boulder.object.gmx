@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-rollSpeed = 10;
+rollSpeed = 6;
 path_start(pat_D18_Boulder, rollSpeed, path_action_stop, true);
 image_speed = 0;
 </string>
@@ -52,7 +52,7 @@ image_speed = 0;
           <argument>
             <kind>1</kind>
             <string>///Events
-if (Dialog.active) {
+if (Dialog.active || path_index &lt; 0) {
     image_speed = 0;
     path_speed = 0;
 }

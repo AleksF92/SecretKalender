@@ -36,7 +36,7 @@
 //Kill player
 if (collision_point(x, y, D18_Aleks, true, true)) {
     if (!D18_Aleks.gameDone) {
-        dialog_show("Fail");
+        dialog_show("Fail: Dart");
         D18_Aleks.gameDone = true;
     }
 }
