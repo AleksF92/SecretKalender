@@ -74,6 +74,8 @@ with (dart) {
     var fwdY = y + lengthdir_y(1, image_angle);
     move_towards_point(fwdX, fwdY, 8);
 }
+scr_sound(snd_D18_Dart);
+
 alarm[0] = delay;
 </string>
           </argument>

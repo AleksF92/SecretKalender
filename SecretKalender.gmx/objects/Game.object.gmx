@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Init
 DEBUG = true;
-DISABLE_SOUND = true;
+DISABLE_SOUND = false;
 
 menuTextVisible = false;
 days = 24;
@@ -226,7 +226,7 @@ else if (room != rom_Calendar) {
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -318,6 +318,19 @@ if (room &gt;= rom_Calendar) {
         case rom_D11_KristianDinkel: { rName = "Luke 11: Dinkel vender tilbake"; break; }
         case rom_D12_LarsenDew: { rName = "Luke 12: Larsen ser Dew, Larsen må ha Dew"; break; }
         case rom_D13_BandiStig: { rName = "Luke 13: Stig Bandicoot"; break; }
+        
+        case rom_D14_AleksOddysee: { rName = "Luke 14: Plikt, er plikt!"; break; }
+        case rom_D15_Japan: { rName = "Luke 15: Japan er..."; break; }
+        case rom_D16_Sov: { rName = "Luke 16: Utmattelse"; break; }
+        case rom_D17_Rock: { rName = "Luke 17: Gitar helten"; break; }
+        case rom_D18_Raider: { rName = "Luke 18: En ekte skattejeger"; break; }
+        
+        case rom_D19_Superfast: { rName = "Luke 19: Kristian the Fastest Thing Alive"; break; }
+        //case rom_D20: { rName = "Luke 20: Navn"; break; }
+        //case rom_D21: { rName = "Luke 21: Navn"; break; }
+        //case rom_D22: { rName = "Luke 22: Navn"; break; }
+        //case rom_D23: { rName = "Luke 23: Navn"; break; }
+        //case rom_D24: { rName = "Luke 24: Navn"; break; }
     }
     draw_text(window_get_width() / 2, 32, rName);
     draw_set_halign(fa_left);

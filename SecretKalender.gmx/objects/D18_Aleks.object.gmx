@@ -28,6 +28,7 @@
             <string>///Init
 gameDone = false;
 moveSpeed = 4;
+scr_music(bgm_D18);
 </string>
           </argument>
         </arguments>
@@ -77,6 +78,7 @@ if (!Dialog.active) {
             with (tile) { instance_destroy(); }
             gameDone = true;
             dialog_show("Fail: Tile", room_speed * 0.5);
+            scr_sound(snd_D18_Tile);
         }
     }
     
@@ -107,6 +109,7 @@ if (!Dialog.active) {
                 if (!instance_exists(D18_Boulder)) {
                     instance_create(0, 0, D18_Boulder);
                 }
+                dialog_show("Info: Switch");
             }
         }
     }
@@ -115,7 +118,7 @@ if (!Dialog.active) {
     var door = collision_point(x, y, D18_Exit, false, true);
     if (door) {
         if (door.image_index == 1) {
-            if (!D18_Boulder.path_index &lt; 0) {
+            if (D18_Boulder.path_index &gt;= 0) {
                 //Not boulder blocked
                 gameDone = true;
                 dialog_show("Win");
