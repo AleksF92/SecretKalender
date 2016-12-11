@@ -3,7 +3,7 @@
   <spriteName>spr_D19_Kristian</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-3</depth>
+  <depth>-4</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -120,6 +120,21 @@ if (!Dialog.active) {
     }
     moveSpeed = clamp(moveSpeed, 0, moveSpeedMax);
     
+    //If super
+    if (D19_Game.doodles &gt;= D19_Game.reqDoodles / 2) {
+        if (!instance_exists(D7_Super)) {
+            var super = instance_create(x, y, D7_Super);
+            super.target = id;
+            super.scale = 3;
+            super.depth = -3;
+        }
+        if (D19_Game.doodles &gt;= D19_Game.reqDoodles) {
+            //Super OP
+            moveSpeed = moveSpeedMax * 1.5;
+            D7_Super.state = "Super";
+        }
+    }
+    
     var moveX = 1;
     if (moveX != 0) {
         image_xscale = moveX;
@@ -225,17 +240,18 @@ scr_sound(snd_D6_LevelUp);
 draw_self();
 
 //Draw help
-if (!Dialog.active &amp;&amp; moveSpeed &lt; moveSpeedMax / 4) {
-    var key = "D";
-    var xx = 32;
+if (!Dialog.active &amp;&amp; moveSpeed &lt; moveSpeedMax / 4 &amp;&amp; canJump) {
+    var key = " D";
+    draw_set_halign(fa_left);
     if (leftFoot) {
-        key = "A";
-        xx = -32;
+        key = "A ";
+        draw_set_halign(fa_right);
     }
     
-    draw_set_font(fnt_Arial_Big);
-    draw_set_colour(c_green);
-    draw_text(x + xx, y - sprite_height - 32, key);
+    draw_set_font(fnt_Arial_Gigantic);
+    draw_set_colour(c_lime);
+    draw_text(x + 8, y - sprite_height, key);
+    draw_set_halign(fa_left);
 }
 </string>
           </argument>

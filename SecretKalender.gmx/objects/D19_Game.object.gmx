@@ -42,6 +42,8 @@ scr_music(bgm_D19);
 
 numDoodles = 0;
 doodles = 0;
+reqDoodles = 0;
+startedTimer = false;
 </string>
           </argument>
         </arguments>
@@ -86,11 +88,42 @@ while (popX &lt; spawnX) {
     //Spawn doodle
     num--;
     numDoodles++;
+    reqDoodles++;
     var doodle = instance_create(popX, room_height - sprite_get_height(spr_D7_CheesDoodle), D19_Doodle);
     doodle.y -= groundDist;
     
     //Prep next doodle
     popX += 64 * 2;
+}
+
+//Requre half doodles
+reqDoodles = floor(reqDoodles * 0.75);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Timer
+if (!gameDone) {
+    gameDone = true;
+    dialog_show("Fail: Time");
 }
 </string>
           </argument>
@@ -120,11 +153,24 @@ if (!Dialog.active) {
         room_goto(rom_Calendar);
     }
     else {
-        if (D19_Kristian.x &gt; spawnX) {
+        if (!startedTimer) {
+            alarm[0] = room_speed * 45;
+            startedTimer = true;
+        }
+        
+        if (D19_Kristian.worldX &gt; spawnX - (room_width / 4)) {
             gameDone = true;
-            dialog_show("Win");
+            if (doodles &gt; reqDoodles) {
+                dialog_show("Win");
+            }
+            else {
+                dialog_show("Fail: Doodles");
+            }
         }
     }
+}
+else {
+    if (alarm[0]) { alarm[0]++; }
 }
 </string>
           </argument>
@@ -151,14 +197,26 @@ if (!Dialog.active) {
             <string>///Draw info
 
 //Draw doodle
-draw_sprite(spr_D7_CheesDoodle, 1, room_width / 2 - 16, window_get_height() - 64);
+draw_sprite(spr_D7_CheesDoodle, 1, (room_width / 2) - 64, window_get_height() - 64);
 
 //Draw count
 draw_set_font(fnt_Arial_Big);
 draw_set_colour(c_white);
 draw_set_valign(fa_middle);
-draw_text(room_width / 2 + 16, window_get_height() - 64, "x" + string(doodles));
+draw_text((room_width / 2) - 32, window_get_height() - 64, "x" + string(doodles) + " / " + string(reqDoodles));
 draw_set_valign(fa_top);
+
+//Draw timer
+var timeStr = "0";
+if (alarm[0]) {
+    var ss = floor(alarm[0] / room_speed);
+    timeStr = string(ss);
+}
+
+draw_set_colour(c_red);
+draw_set_halign(fa_center);
+draw_text(room_width / 2, window_get_height() - 32, "Tid: " + timeStr + " sekunder");
+draw_set_halign(fa_left);
 </string>
           </argument>
         </arguments>
