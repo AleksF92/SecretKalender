@@ -92,6 +92,9 @@ else {
 if (room &lt;= rom_Calendar &amp;&amp; (lastRoom &gt; rom_Calendar || lastRoom == noone)) {
     var randSong = choose(bgm_Menu1, bgm_Menu2, bgm_Menu3);
     scr_music(randSong);
+    Game.targetRoom = noone;
+    Game.targetGroup = noone;
+    ag_activate(noone);
 }
 lastRoom = room;
 </string>

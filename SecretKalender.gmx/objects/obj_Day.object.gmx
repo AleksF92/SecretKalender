@@ -82,7 +82,7 @@ if (btnState == BTN_DISABLED) {
         }
     }
 }
-else if (!Dialog.active) {
+else if (!Dialog.active &amp;&amp; Game.targetRoom == noone) {
     if (room_exists(room + day)) {
         //Reset color
         frameColor = c_white;
@@ -94,7 +94,17 @@ else if (!Dialog.active) {
                 
                 //Check for click
                 if (mouse_check_button_pressed(mb_left)) {
-                    room_goto(room + day);
+                    //Schedule room
+                    Game.targetRoom = room + day;
+                    
+                    //Load assets
+                    var week = noone;
+                    if (day &gt;= 1 &amp;&amp; day &lt;= 6) { week = ag_week1; }
+                    else if (day &gt;= 7 &amp;&amp; day &lt;= 12) { week = ag_week2; }
+                    else if (day &gt;= 13 &amp;&amp; day &lt;= 18) { week = ag_week3; }
+                    else if (day &gt;= 19 &amp;&amp; day &lt;= 24) { week = ag_week4; }
+                    Game.targetGroup = week;
+                    ag_activate(week);
                 }
             }
         }
@@ -124,26 +134,28 @@ else if (!Dialog.active) {
             <kind>1</kind>
             <string>///Draw
 
-//Draw sprite
-draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, sprColor, 1);
-
-//Draw day number
-if (day) {
-    draw_set_halign(fa_right);
-    draw_set_valign(fa_bottom);
-        draw_set_colour(c_white);
-        draw_set_font(fnt_Arial_Big);
-        draw_text(right - textOffset, bottom - textOffset, string(day));
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
+if (Game.targetRoom == noone) {
+    //Draw sprite
+    draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, sprColor, 1);
+    
+    //Draw day number
+    if (day) {
+        draw_set_halign(fa_right);
+        draw_set_valign(fa_bottom);
+            draw_set_colour(c_white);
+            draw_set_font(fnt_Arial_Big);
+            draw_text(right - textOffset, bottom - textOffset, string(day));
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+    }
+    
+    //Draw frame
+    draw_set_colour(frameColor);
+    draw_line_width(x, y, right, y, frameWidth);
+    draw_line_width(right, y, right, bottom, frameWidth);
+    draw_line_width(right, bottom, x, bottom, frameWidth);
+    draw_line_width(x, bottom, x, y, frameWidth);
 }
-
-//Draw frame
-draw_set_colour(frameColor);
-draw_line_width(x, y, right, y, frameWidth);
-draw_line_width(right, y, right, bottom, frameWidth);
-draw_line_width(right, bottom, x, bottom, frameWidth);
-draw_line_width(x, bottom, x, y, frameWidth);
 </string>
           </argument>
         </arguments>
