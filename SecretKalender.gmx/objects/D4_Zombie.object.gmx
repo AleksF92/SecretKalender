@@ -186,8 +186,8 @@ else {
             if (mouse_check_button_pressed(mb_left)) {
                 //Kill
                 D4_CallOfLarsen.kills++;
-                audio_play_sound(snd_D4_Shot, 0, false);
-                audio_play_sound(snd_D4_Zombie_Die, 0, false);
+                scr_sound(snd_D4_Shot);
+                scr_sound(snd_D4_Zombie_Die);
                     
                 if (D4_CallOfLarsen.kills &gt;= 20) {
                     dialog_show("Win");

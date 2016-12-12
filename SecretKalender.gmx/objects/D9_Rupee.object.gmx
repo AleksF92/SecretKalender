@@ -44,7 +44,7 @@ else if (random_int(1, 4) == 1) {
 
 //Collect rupee
 D9_Stig.rupees += value;
-audio_play_sound(snd_D9_Rupee, 0, false);
+scr_sound(snd_D9_Rupee);
 </string>
           </argument>
         </arguments>

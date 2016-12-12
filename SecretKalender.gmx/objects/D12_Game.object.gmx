@@ -42,6 +42,7 @@ posM = 384 + 32;
 
 liftHeight = 64 * 3;
 liftTime = room_speed * 2;
+scr_music(bgm_D12);
 </string>
           </argument>
         </arguments>

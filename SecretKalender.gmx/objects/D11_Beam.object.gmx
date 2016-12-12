@@ -33,7 +33,7 @@ progress = 0;
 x2 = 0;
 y2 = 0;
 flagged = false;
-audio_play_sound(snd_D11_LaserCharge, 0, false);
+scr_sound(snd_D11_LaserCharge);
 </string>
           </argument>
         </arguments>
@@ -83,7 +83,7 @@ instance_destroy();
             <string>///Fire
 alarm[1] = ttl;
 audio_stop_sound(snd_D11_LaserCharge);
-audio_play_sound(snd_D11_LaserFire, 0, false);
+scr_sound(snd_D11_LaserFire);
 </string>
           </argument>
         </arguments>

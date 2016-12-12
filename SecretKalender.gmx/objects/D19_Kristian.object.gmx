@@ -171,7 +171,7 @@ if (!Dialog.active) {
         canJump = false;
         fallSpeed = -jumpForce;
         y += fallSpeed;
-        audio_play_sound(snd_D13_Jump, 0, false);
+        scr_sound(snd_D13_Jump);
     }
     
     //Set correct sprite

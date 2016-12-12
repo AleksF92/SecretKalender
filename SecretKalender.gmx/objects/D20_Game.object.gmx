@@ -31,6 +31,7 @@ gameDone = 0;
 infoBreak = true;
 fixed = 0;
 holdLock = false;
+scr_music(noone);
 </string>
           </argument>
         </arguments>
@@ -71,6 +72,7 @@ if (!Dialog.active) {
         //Show dialog
         dialog_show("Info: Break");
         infoBreak = false;
+        scr_music(bgm_D20);
     }
     else {
         if (fixed == pieces) {

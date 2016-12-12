@@ -154,7 +154,7 @@ if (!Dialog.active) {
     }
     else {
         if (!startedTimer) {
-            alarm[0] = room_speed * 45;
+            alarm[0] = room_speed * 55;
             startedTimer = true;
         }
         

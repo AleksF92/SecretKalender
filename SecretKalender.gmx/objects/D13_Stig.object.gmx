@@ -160,7 +160,7 @@ if (!Dialog.active) {
         canJump = false;
         fallSpeed = -jumpForce;
         y += fallSpeed;
-        audio_play_sound(snd_D13_Jump, 0, false);
+        scr_sound(snd_D13_Jump);
     }
     
     //Spin
@@ -170,7 +170,7 @@ if (!Dialog.active) {
             spinning = true;
             alarm[0] = room_speed;
             alarm[1] = room_speed * 1.25;
-            audio_play_sound(snd_D13_Spin, 0, false);
+            scr_sound(snd_D13_Spin);
         }
         image_speed = (1 / room_speed) * 16;
     }
