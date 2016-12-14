@@ -132,7 +132,7 @@ else {
     //Check if murdered
     var light = instance_nearest(x, y, D16_Lamp);
     if (light.on &amp;&amp; y &lt;= light.y + (64 * 3)) {
-        scr_sound(snd_D4_Zombie_Die);
+        scr_sound(snd_D16_Die);
         instance_destroy();
     }
 }

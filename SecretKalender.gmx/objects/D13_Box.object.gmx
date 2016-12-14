@@ -281,7 +281,7 @@ else if (D13_Stig.fallSpeed &gt; 12) {
     //Jumped on
     var bounce = -(D13_Stig.jumpForce * 0.5);
     var spring = -(D13_Stig.jumpForce * 1.25);
-    if (type == D13_NORMAL || type == D13_SECRET || type == D13_AKU) {
+    if (type == D13_NORMAL || type == D13_SECRET) {
         D13_Game.fruit += fruitCount;
         D13_Stig.fallSpeed = bounce;
         D13_Game.boxes--;
@@ -300,9 +300,6 @@ else if (D13_Stig.fallSpeed &gt; 12) {
             D13_Game.boxes--;
             instance_destroy();
         }
-    }
-    else if (type == D13_JUMP) {
-        D13_Stig.fallSpeed = spring;
     }
     else if (type == D13_TNT) {
         if (!alarm[1]) {

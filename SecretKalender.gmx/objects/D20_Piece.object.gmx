@@ -99,7 +99,7 @@ if (held) {
         locked = true;
         depth = -1;
         D20_Game.fixed++;
-        scr_sound(snd_D1_Step);
+        scr_sound(snd_D20_Locked);
     }
 }
 </string>

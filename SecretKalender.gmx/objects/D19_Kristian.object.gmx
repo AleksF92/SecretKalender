@@ -171,7 +171,7 @@ if (!Dialog.active) {
         canJump = false;
         fallSpeed = -jumpForce;
         y += fallSpeed;
-        scr_sound(snd_D13_Jump);
+        scr_sound(snd_D19_Jump);
     }
     
     //Set correct sprite
@@ -213,7 +213,7 @@ else {
             <string>///Eat doodle
 D19_Game.doodles += other.value;
 with (other) { instance_destroy(); }
-scr_sound(snd_D6_LevelUp);
+scr_sound(snd_D19_Doodle);
 </string>
           </argument>
         </arguments>

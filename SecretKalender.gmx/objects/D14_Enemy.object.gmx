@@ -254,7 +254,7 @@ if (point_in_triangle(D14_Aleks.x, D14_Aleks.y, x, y, leftX, leftY, rightX, righ
     //Check if not shoot
     if (!D14_Aleks.gameDone) {
         //Shoot player
-        scr_sound(snd_D4_Shot);
+        scr_sound(snd_D14_Shot);
         D14_Aleks.gameDone = true;
         dialog_show("Fail: Dead");
         
@@ -270,8 +270,8 @@ for (var i = 0; i &lt; instance_number(D14_Friend); i++) {
         //Check if following player
         if (friend.follow) {
             //Shoot friend
-            scr_sound(snd_D4_Shot);
-            scr_sound(snd_D6_Enemy3);
+            scr_sound(snd_D14_Shot);
+            scr_sound(snd_D14_FriendDie);
             with (friend) { instance_destroy(); }
             D14_Aleks.friend = noone;
             D14_Aleks.kills++;
