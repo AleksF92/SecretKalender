@@ -32,6 +32,36 @@ image_xscale = 2;
 image_yscale = 2;
 fadeIn = false;
 control = false;
+
+moving = false;
+groundLevel = room_height - (32 * 4);
+startX = 0;
+reset = false;
+gameDone = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Walk delay
+moving = true;
 </string>
           </argument>
         </arguments>
@@ -58,8 +88,53 @@ control = false;
 
 //Fall til grounded
 if (ground) {
-    if (control) {
-    
+    if (control &amp;&amp; !Dialog.active) {
+        if (!keyboard_check(vk_space)) {
+            if (gameDone) {
+                room_goto(rom_Calendar);
+            }
+        
+            //Check win
+            if (x &gt; room_width) {
+                gameDone = true;
+                dialog_show("Win");
+            }
+        
+            //Reset
+            if (reset) {
+                x = startX;
+                reset = false;
+                D21_Kristian.alarm[1] = room_speed * 0.5;
+            }
+        
+            //Check for kristian
+            var dist = D21_Kristian.x - x;
+            dist = max(dist, -dist);
+            if (dist &lt; 32 &amp;&amp; !D21_Kristian.alarm[1]) {
+                dialog_show("Fail");
+                reset = true;
+            }
+        
+            if (moving) {
+                x += 1;
+            }
+            else {
+                if (!alarm[0]) {
+                    alarm[0] = room_speed * 1;
+                }
+                else {
+                    y -= 1;
+                }
+            }
+        }
+        else {
+            if (!(y &gt;= groundLevel)) {
+                //Abort
+                alarm[0] = 0;
+                moving = false;
+                ground = false;
+            }
+        }
     }
 }
 else {
@@ -68,21 +143,23 @@ else {
     if (fallSpeed &gt; 20) { fallSpeed = 20; }
     y += fallSpeed;
     
-    if (y &gt;= room_height - (32 * 4)) {
+    if (y &gt;= groundLevel) {
         ground = true;
-        D21_Kristian.step++;
+        y = groundLevel;
+        if (D21_Kristian.step &lt; 7) { D21_Kristian.step++; }
     }
-    else if (y &gt;= room_height - (32 * 6)) {
+    else if (y &gt;= groundLevel - 64) {
         D21_Stig.visible = false;
     }
 }
 
 if (fadeIn) {
-    image_alpha += 0.1;
+    image_alpha += 0.02;
     if (image_alpha &gt;= 1) {
         image_alpha = 1;
         fadeIn = false;
         D21_Stig.step++;
+        startX = x;
     }
 }
 </string>
@@ -111,6 +188,39 @@ if (fadeIn) {
 image_alpha = 0;
 D21_Kristian.step++;
 path_end();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw
+if (alarm[0]) {
+    draw_sprite_ext(spr_Face_Stig, 0, x + 32, groundLevel, 1.5, 1.5, 0, c_white, 1);
+    draw_self();
+}
+else {
+    draw_self();
+    if (moving) {
+        draw_sprite_ext(spr_Face_Stig, 0, x + 32, groundLevel, 1.5, 1.5, 0, c_white, 1);
+    }
+}
 </string>
           </argument>
         </arguments>

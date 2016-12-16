@@ -29,6 +29,56 @@
 image_speed = 0;
 image_xscale = -1;
 step = -1;
+runSpeed = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Hit cooldown
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Run as fuck
+image_xscale *= -1;
+runSpeed = choose(10, 15, 20) * image_xscale;
+path_start(pat_D21_KristianScout, runSpeed, path_action_stop, true);
 </string>
           </argument>
         </arguments>
@@ -73,6 +123,9 @@ if (!Dialog.active &amp;&amp; path_index &lt; 0) {
         path_start(pat_D21_KristianRun, 10, path_action_stop, true);
         step++;
     }
+    else if (step == 8 &amp;&amp; alarm[0] &lt; 0) {
+        alarm[0] = room_speed * random_range(0, 2);
+    }
 }
 
 if (step == 1 &amp;&amp; path_index &gt;= 0) {
@@ -80,6 +133,16 @@ if (step == 1 &amp;&amp; path_index &gt;= 0) {
     if (path_position &gt; 0.75) { image_index = 1; }
     else if (path_position &gt; 0.5) { image_index = 0; }
     else if (path_position &gt; 0.25) { image_index = 1; }
+}
+
+
+if (path_index == pat_D21_KristianScout) {
+    if (Dialog.active) {
+        path_speed = 0;
+    }
+    else if (path_speed == 0) {
+        path_speed = runSpeed;
+    }
 }
 </string>
           </argument>
@@ -114,32 +177,6 @@ else if (step == 4) {
 else if (step == 7) {
     D21_Box.fadeIn = true;
 }
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Draw
-draw_self();
-
-draw_text(room_width / 2, 128, "K Step: " + string(step));
 </string>
           </argument>
         </arguments>

@@ -73,6 +73,7 @@ if (!Dialog.active &amp;&amp; path_index &lt; 0) {
     }
     else if (step == 7) {
         D21_Box.control = true;
+        D21_Kristian.step++;
         step++;
     }
 }
