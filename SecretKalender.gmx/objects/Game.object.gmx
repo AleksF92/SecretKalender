@@ -26,8 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>///Init
-DEBUG = false;
-DISABLE_SOUND = false;
+DEBUG = true;
+DISABLE_SOUND = true;
 
 menuTextVisible = false;
 days = 24;
@@ -354,11 +354,11 @@ if (room &gt;= rom_Calendar) {
         case rom_D18_Raider: { rName = "Luke 18: En ekte skattejeger"; break; }
         
         case rom_D19_Superfast: { rName = "Luke 19: Kristian the Fastest Thing Alive"; break; }
-        //case rom_D20: { rName = "Luke 20: Navn"; break; }
-        //case rom_D21: { rName = "Luke 21: Navn"; break; }
-        //case rom_D22: { rName = "Luke 22: Navn"; break; }
-        //case rom_D23: { rName = "Luke 23: Navn"; break; }
-        //case rom_D24: { rName = "Luke 24: Navn"; break; }
+        case rom_D20_Jigsaw: { rName = "Luke 20: Larsens julegave"; break; }
+        case rom_D21_MetalUtstyr: { rName = "Luke 21: Metall utstyr duger"; break; }
+        case rom_D22_Soknad: { rName = "Luke 22: Skrive søknad"; break; }
+        case rom_D23_Hunter: { rName = "Luke 23: Larsen Hunter X"; break; }
+        case rom_D24_GodJul: { rName = "Luke 24: God Jul til alle"; break; }
     }
     draw_text(window_get_width() / 2, 32, rName);
     draw_set_halign(fa_left);
