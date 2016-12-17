@@ -28,11 +28,196 @@
             <string>///Init
 good = false;
 
-var s = 256;
-x1 = x - (s / 2);
-y1 = y - (s / 2);
-x2 = x1 + s;
-y2 = y1 + s;
+range = 128;
+x1 = x - (range / 2);
+y1 = y - (range / 2);
+x2 = x1 + range;
+y2 = y1 + range;
+
+list = ds_list_create();
+time = 0;
+wordReq = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Destroy
+ds_list_destroy(list);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check if id is in list
+if (good &amp;&amp; D22_Game.held != noone) {
+    for (var i = 0; i &lt; ds_list_size(list); i++) {
+        if (list[| i] == D22_Game.held) {
+            ds_list_delete(list, i);
+            break;
+        }
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set new soknad
+if (!D22_Game.gameDone) {
+    dialog_show("Fail: Time");
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Events
+if (!Dialog.active &amp;&amp; good) {
+    if (!alarm[0]) {
+        //Start new CV
+        for (var i = 0; i &lt; ds_list_size(list); i++) {
+            with (list[| i]) { instance_destroy(); }
+        }
+        ds_list_clear(list);
+        wordReq = choose(5, 6, 7);
+        time = room_speed * (wordReq * 6);
+        alarm[0] = time;
+    }
+    else {
+        //Check if done
+        if (ds_list_size(list) &gt;= wordReq) {
+            for (var i = 0; i &lt; ds_list_size(list); i++) {
+                if (list[| i].type == "Bad") {
+                    dialog_show("Fail: Bad");
+                    alarm[0] = 0;
+                }
+            }
+            
+            if (!Dialog.active) {
+                //Good cv
+                dialog_show("Good CV");
+                alarm[0] = 0;
+                scr_sound(snd_D19_Doodle);
+                D22_Game.cvs++;
+            }
+        }
+    }
+}
+else if (alarm[0]) {
+    alarm[0] += 1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw cv timer
+if (alarm[0]) {
+    var w = 256;
+    var h = 20;
+    var bx = x - (w / 2);
+    var by = D22_Game.timerY;
+    
+    draw_set_colour(c_white);
+    draw_rectangle(bx, by, bx + w, by + h, false);
+    var prog = alarm[0] / time;
+    draw_set_colour(c_lime);
+    draw_rectangle(bx, by, bx + (w * prog), by + h, false);
+    
+    draw_set_font(fnt_Arial_Small);
+    draw_set_colour(c_black);
+    draw_set_halign(fa_center);
+    draw_set_valign(fa_middle);
+    draw_text(bx + (w / 2), by + (h / 2), "Ord vi trenger: " + string(ds_list_size(list)) + " / " + string(wordReq));
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+}
 </string>
           </argument>
         </arguments>
@@ -60,8 +245,13 @@ var col = c_red;
 if (good) { col = c_lime; }
 draw_set_colour(col);
 draw_set_alpha(0.25);
-draw_rectangle(x1, y1, x2, y2, false);
+draw_circle(x, y, range, false);
 draw_set_alpha(1);
+
+if (distance_to_point(mouse_x, mouse_y) &lt;= range) {
+    draw_set_colour(c_white);
+    draw_circle(x, y, range, true);
+}
 </string>
           </argument>
         </arguments>

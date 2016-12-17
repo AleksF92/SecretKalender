@@ -108,11 +108,17 @@ if (ground) {
             }
         
             //Check for kristian
-            var dist = D21_Kristian.x - x;
+            var range = 128;
+            var dist = D21_Kristian.x - (x + 32);
             dist = max(dist, -dist);
-            if (dist &lt; 32 &amp;&amp; !D21_Kristian.alarm[1]) {
-                dialog_show("Fail");
-                reset = true;
+            var onStigsLeftSide = (D21_Kristian.x &lt; x);
+            var notPassedRight = (D21_Kristian.image_xscale == 1 &amp;&amp; onStigsLeftSide);
+            var notPassedLeft = (D21_Kristian.image_xscale == -1 &amp;&amp; !onStigsLeftSide);
+            if ((notPassedRight || notPassedLeft) &amp;&amp; dist &lt;= 128) {
+                if (!D21_Kristian.alarm[1]) {
+                    dialog_show("Fail");
+                    reset = true;
+                }
             }
         
             if (moving) {

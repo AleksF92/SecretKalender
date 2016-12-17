@@ -29,6 +29,7 @@
 image_speed = 0;
 image_index = 4;
 step = 0;
+scr_music(noone);
 </string>
           </argument>
         </arguments>
@@ -59,6 +60,7 @@ if (!Dialog.active &amp;&amp; path_index &lt; 0) {
     }
     else if (step == 2) {
         instance_create(x, y - sprite_height, D21_Box);
+        scr_music(bgm_D21);
         step++;
     }
     else if (step == 4) {
