@@ -39,7 +39,7 @@ mainTimerY = 64 + 32;
 timerY = mainTimerY + 32;
 cvs = 0;
 cvReq = 10;
-cvTime = room_speed * (cvReq * 30);
+cvTime = room_speed * (cvReq * 40);
 alarm[1] = cvTime;
 </string>
           </argument>

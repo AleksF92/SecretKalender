@@ -46,7 +46,7 @@ level = 1;
 killReq = 100;
 
 infoRage = true;
-scr_music(noone);
+scr_music(bgm_D23);
 </string>
           </argument>
         </arguments>
@@ -272,7 +272,8 @@ if (swingSpeed &gt; 0) {
     else if (level == 4 &amp;&amp; kills &gt;= killReq) {
         gameDone = true;
         dialog_show("Win");
-        alarm[1] = 0; 
+        alarm[1] = 0;
+        level++;
     }
 }
 </string>

@@ -52,7 +52,7 @@ moveSpeed = random_range(2, 3);
             <string>///Events
 if (!Dialog.active) {
     //Check dist
-    if (distance_to_point(D23_Kristian.x, D23_Kristian.y) &lt;= 2) {
+    if (distance_to_point(D23_Kristian.x, D23_Kristian.y) &lt;= 2 &amp;&amp; !D23_Sword.gameDone) {
         D23_Sword.gameDone = true;
         dialog_show("Fail");
     }

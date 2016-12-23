@@ -72,10 +72,13 @@ locked = false;
             <string>///Events
 if (!locked &amp;&amp; !Dialog.active) {
     if (mouse_check_button_pressed(mb_left)) {
-        if (distance_to_point(mouse_x, mouse_y) &lt;= range) {
+        var distX = x - mouse_x;
+        var distY = y - mouse_y;
+        var dist = sqrt(max(distX, -distX) * max(distY, -distY));
+        if (dist &lt;= range * 0.7) {
             if (!D22_Game.held) {
-                D22_Game.held = id;
-                D22_Spot.alarm[1] = 1;
+                with (D22_Game) { held = other.id; }
+                with (D22_Spot) { alarm[1] = 1; }
             }
         }
     }
@@ -83,7 +86,10 @@ if (!locked &amp;&amp; !Dialog.active) {
         if (D22_Game.held == id) {
             D22_Game.held = noone;
             var pos = instance_nearest(x, y, D22_Spot);
-            if (distance_to_object(pos) &lt;= pos.range) {
+            var distX = x - pos.x;
+            var distY = y - pos.y;
+            var dist = sqrt(max(distX, -distX) * max(distY, -distY));
+            if (dist &lt;= pos.range * 0.7) {
                 //Drop
                 if (pos.good) {
                     //Add to good list
